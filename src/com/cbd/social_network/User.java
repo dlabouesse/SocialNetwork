@@ -8,6 +8,7 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String password;
 	private Set<User> friends;
 	
 	public User(String firstName, String lastName, String email)

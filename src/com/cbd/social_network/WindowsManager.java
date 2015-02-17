@@ -35,49 +35,49 @@ public class WindowsManager {
 	{
 		JFrame mainFrame = new JFrame("My Social Network");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setBounds(100, 100, 450, 250);
+		mainFrame.setBounds(100, 100, 450, 350);
 		
 		JPanel tabButtons = new JPanel();
 		JButton loginTab = new JButton("Login");
 		JButton registerTab = new JButton("Register");
-		
 		tabButtons.add(loginTab);
 		tabButtons.add(registerTab);
 		
-		JPanel contentPane = new JPanel();
+		JPanel contentPanel = new JPanel();
 		CardLayout cl = new CardLayout();
 		JPanel loginCard = new JPanel();
 	    JPanel registerCard = new JPanel();
-	    
-	    contentPane.setLayout(cl);
-	    contentPane.add(loginCard, "loginCard");
-	    contentPane.add(registerCard, "registerCard");
+	    contentPanel.setLayout(cl);
+	    contentPanel.add(loginCard, "loginCard");
+	    contentPanel.add(registerCard, "registerCard");
 
-		//loginCard
-		JTextField emailAddressField;
-		JPasswordField passwordField;
-		JLabel messageLabel;
-
-		JPanel titlePanel = new JPanel();
-		loginCard.add(titlePanel, BorderLayout.NORTH);
-		JLabel titleLabel = new JLabel("Please login to access the application");
-		titlePanel.add(titleLabel);
-
-		JPanel updatePanel = new JPanel();
-		loginCard.add(updatePanel, BorderLayout.CENTER);
+	//loginCard
+		JTextField loginEmailAddressField;
+		JPasswordField loginPasswordField;
+		JLabel loginMessageLabel;
+		
+		//loginTitlePanel
+		JPanel loginTitlePanel = new JPanel();
+		loginCard.add(loginTitlePanel, BorderLayout.NORTH);
+		JLabel loginTitleLabel = new JLabel("Please login to access the application");
+		loginTitlePanel.add(loginTitleLabel);
+		
+		//loginFieldsPanel
+		JPanel loginFieldsPanel = new JPanel();
+		loginCard.add(loginFieldsPanel, BorderLayout.CENTER);
 
 		Box b1 = Box.createHorizontalBox();
-		JLabel usernameLabel = new JLabel("Email address: ");
-		emailAddressField = new JTextField();
-		b1.add(usernameLabel);
-		b1.add(emailAddressField);
-		emailAddressField.setColumns(20);
+		JLabel loginUsernameLabel = new JLabel("Email address: ");
+		loginEmailAddressField = new JTextField();
+		b1.add(loginUsernameLabel);
+		b1.add(loginEmailAddressField);
+		loginEmailAddressField.setColumns(20);
 		
 		Box b2 = Box.createHorizontalBox();
-		JLabel passwordLabel = new JLabel("Password: ");
-		passwordField = new JPasswordField();
-		b2.add(passwordLabel);
-		b2.add(passwordField);
+		JLabel loginPasswordLabel = new JLabel("Password: ");
+		loginPasswordField = new JPasswordField();
+		b2.add(loginPasswordLabel);
+		b2.add(loginPasswordField);
 		//passwordField.setColumns(10);
 		
 		Box b3 = Box.createVerticalBox();
@@ -85,30 +85,102 @@ public class WindowsManager {
 		b3.add(b2);
 		
 
-		JButton updateNameButton = new JButton("Login");
+		JButton loginButton = new JButton("Login");
 		//updateNameButton.addActionListener(new UpdateNameActionListener());
-		b3.add(updateNameButton);
+		b3.add(loginButton);
 		
-		updatePanel.add(b3);
-
-		JPanel messsagePanel = new JPanel();
-		loginCard.add(messsagePanel, BorderLayout.SOUTH);
-
-		messageLabel = new JLabel("");
-		messsagePanel.add(messageLabel);
+		loginFieldsPanel.add(b3);
 		
+		//loginMessagePanel
+		JPanel loginMesssagePanel = new JPanel();
+		loginCard.add(loginMesssagePanel, BorderLayout.SOUTH);
+
+		loginMessageLabel = new JLabel("");
+		loginMesssagePanel.add(loginMessageLabel);
+		
+	//registerCard
+		JTextField registerFirstNameField;
+		JTextField registerLastNameField;
+		JTextField registerEmailAddressField;
+		JPasswordField registerPasswordField;
+		JPasswordField registerConfirmationField;
+		JLabel registerMessageLabel;
+		
+		//registerTitlePanel
+		JPanel registerTitlePanel = new JPanel();
+		registerCard.add(registerTitlePanel, BorderLayout.NORTH);
+		JLabel registerTitleLabel = new JLabel("Please complete this form to register");
+		registerTitlePanel.add(registerTitleLabel);
+		
+		//loginFieldsPanel
+		JPanel registerFieldsPanel = new JPanel();
+		registerCard.add(registerFieldsPanel, BorderLayout.CENTER);
+
+		Box b4 = Box.createHorizontalBox();
+		JLabel registerFirstNameLabel = new JLabel("First name: ");
+		registerFirstNameField = new JTextField();
+		b4.add(registerFirstNameLabel);
+		b4.add(registerFirstNameField);
+		registerFirstNameField.setColumns(20);
+		
+		Box b5 = Box.createHorizontalBox();
+		JLabel registerLastNameLabel = new JLabel("Last name: ");
+		registerLastNameField = new JTextField();
+		b5.add(registerLastNameLabel);
+		b5.add(registerLastNameField);
+		
+		Box b6 = Box.createHorizontalBox();
+		JLabel registerEmailAddressLabel = new JLabel("Email address: ");
+		registerEmailAddressField = new JTextField();
+		b6.add(registerEmailAddressLabel);
+		b6.add(registerEmailAddressField);
+		
+		Box b7 = Box.createHorizontalBox();
+		JLabel registerPasswordLabel = new JLabel("Password: ");
+		registerPasswordField = new JPasswordField();
+		b7.add(registerPasswordLabel);
+		b7.add(registerPasswordField);
+		
+		Box b8 = Box.createHorizontalBox();
+		JLabel registerConfirmationLabel = new JLabel("Confirmation: ");
+		registerConfirmationField = new JPasswordField();
+		b8.add(registerConfirmationLabel);
+		b8.add(registerConfirmationField);
+		
+		Box b9 = Box.createVerticalBox();
+		b9.add(b4);
+		b9.add(b5);
+		b9.add(b6);
+		b9.add(b7);
+		b9.add(b8);
+		
+
+		JButton registerButton = new JButton("Register");
+		//updateNameButton.addActionListener(new UpdateNameActionListener());
+		b9.add(registerButton);
+		
+		registerFieldsPanel.add(b9);
+		
+		//loginMessagePanel
+		JPanel registerMesssagePanel = new JPanel();
+		registerCard.add(registerMesssagePanel, BorderLayout.SOUTH);
+
+		registerMessageLabel = new JLabel("");
+		registerMesssagePanel.add(registerMessageLabel);
+		
+	//Action listeners	
 		loginTab.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        cl.show(contentPane, "loginCard");
+		        cl.show(contentPanel, "loginCard");
 		      }
 		    });
 		registerTab.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        cl.show(contentPane, "registerCard");
+		        cl.show(contentPanel, "registerCard");
 		      }
 		    });
 		
-	    mainFrame.getContentPane().add(contentPane, BorderLayout.CENTER);
+	    mainFrame.getContentPane().add(contentPanel, BorderLayout.CENTER);
 		mainFrame.getContentPane().add(tabButtons, BorderLayout.NORTH);
 		mainFrame.setVisible(true);
 	}
