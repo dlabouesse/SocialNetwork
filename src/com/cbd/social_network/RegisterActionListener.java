@@ -20,13 +20,14 @@ public class RegisterActionListener implements ActionListener
 			User user = new User(firstName, lastName, email, password);
 			
 			//TODO add validation to the fields (regex)
+			//TODO check uniqueness of the email!
 			DatabaseManager.getInstance().persistNewUser(user);
 			
-			ui.registerDisplay("Welcome "+firstName+" on this application!");
+			ui.setRegisterMessage("Welcome "+firstName+" on this application!");
 		}
 		else//Password doesn't match confirmation
 		{
-			ui.registerDisplay("Error! The password doesn't match the confirmation");
+			ui.setRegisterMessage("Error! The password doesn't match the confirmation");
 		}
 	}
 }

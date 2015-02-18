@@ -18,12 +18,17 @@ import java.awt.event.ActionListener;
 public class WindowsManager {
 	
 	private static WindowsManager instance;
+	
 	private JTextField registerFirstNameField;
 	private JTextField registerLastNameField;
 	private JTextField registerEmailAddressField;
 	private JPasswordField registerPasswordField;
 	private JPasswordField registerConfirmationField;
 	private JLabel registerMessageLabel;
+	
+	private JTextField loginEmailAddressField;
+	private JPasswordField loginPasswordField;
+	private JLabel loginMessageLabel;
 	
 	protected WindowsManager()
 	{
@@ -59,9 +64,7 @@ public class WindowsManager {
 	    contentPanel.add(registerCard, "registerCard");
 
 	//loginCard
-		JTextField loginEmailAddressField;
-		JPasswordField loginPasswordField;
-		JLabel loginMessageLabel;
+		
 		
 		//loginTitlePanel
 		JPanel loginTitlePanel = new JPanel();
@@ -185,9 +188,14 @@ public class WindowsManager {
 		mainFrame.setVisible(true);
 	}
 	
-	public void registerDisplay(String message)
+	public void setRegisterMessage(String message)
 	{
 		registerMessageLabel.setText(message);
+	}
+	
+	public void setLoginMessage(String message)
+	{
+		loginMessageLabel.setText(message);
 	}
 	
 	public String getRegisterFirstName() 
@@ -208,6 +216,16 @@ public class WindowsManager {
 	public String getRegisterPassword()
 	{
 		return String.valueOf(registerPasswordField.getPassword());
+	}
+	
+	public String getLoginEmail()
+	{
+		return loginEmailAddressField.getText();
+	}
+	
+	public String getLoginPassword()
+	{
+		return String.valueOf(loginPasswordField.getPassword());
 	}
 	
 	//true if password matches confirmation

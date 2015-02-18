@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DatabaseManager {
 	// 1: DB Setup - URL's and credentials
@@ -32,7 +31,7 @@ public class DatabaseManager {
 		public void persistNewUser(User user)
 		{
 			Connection dbConnection = null;
-			PreparedStatement insertEmployeeStatement = null;
+			PreparedStatement insertUserStatement = null;
 			try
 			{
 				dbConnection = getDBConnection();
@@ -40,18 +39,18 @@ public class DatabaseManager {
 				
 				String insertUser = "INSERT INTO user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
 
-				insertEmployeeStatement = dbConnection.prepareStatement(insertUser);
+				insertUserStatement = dbConnection.prepareStatement(insertUser);
 				
-				insertEmployeeStatement.setString(1, user.getFirstName());
-				insertEmployeeStatement.setString(2, user.getLastName());
-				insertEmployeeStatement.setString(3, user.getEmail());
-				insertEmployeeStatement.setString(4, user.getPassword());
+				insertUserStatement.setString(1, user.getFirstName());
+				insertUserStatement.setString(2, user.getLastName());
+				insertUserStatement.setString(3, user.getEmail());
+				insertUserStatement.setString(4, user.getPassword());
 
-				insertEmployeeStatement.executeUpdate(); 
+				insertUserStatement.executeUpdate(); 
 				
 				dbConnection.commit();
 				
-				insertEmployeeStatement.close();
+				insertUserStatement.close();
 				dbConnection.close();
 			}
 			catch(SQLException se)
@@ -63,8 +62,8 @@ public class DatabaseManager {
 			{
 				try
 				{
-					if (insertEmployeeStatement != null)
-						insertEmployeeStatement.close();
+					if (insertUserStatement != null)
+						insertUserStatement.close();
 					
 					if (dbConnection != null)
 						dbConnection.close();
@@ -77,67 +76,37 @@ public class DatabaseManager {
 			}
 		}
 		
-		private static Connection getDBConnection() 
-		{
-
-			Connection dbConnection = null;
-			try {
-
-				Class.forName(DB_DRIVER);
-				dbConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-				return dbConnection;
-
-			} catch (ClassNotFoundException e) {
-				// Handle errors for Class.forName
-				e.printStackTrace();
-			} catch (SQLException se) {
-				// Handle errors for JDBC
-				se.printStackTrace();
-			}
-			return dbConnection;
-
-		}
-		/*
-		public void persistNewEmployee(Employee employee)
+		public User getUser(String email, String password)
 		{
 			Connection dbConnection = null;
-			PreparedStatement statementSelectCompany = null;
-			PreparedStatement statementInsertEmployee = null;
+			PreparedStatement selectUserStatement = null;
+			User user = new User();
+			
 			try
 			{
 				dbConnection = getDBConnection();
-				
 				dbConnection.setAutoCommit(false);
 				
-				// SELECT company's id
-				String selectSql = "SELECT id FROM Company WHERE name = ?";
-				statementSelectCompany = dbConnection.prepareStatement(selectSql);
-				// set '?' parameters. Ensure you have the correct order
-				statementSelectCompany.setString(1, employee.getCompany().getName());
-				ResultSet rs = statementSelectCompany.executeQuery();
+				String selectUser = "SELECT first_name, last_name, email, password FROM user WHERE email = ?";
+
+				selectUserStatement = dbConnection.prepareStatement(selectUser);
 				
-				long idCompany=-1;
+				selectUserStatement.setString(1, email);
+
+				ResultSet rs = selectUserStatement.executeQuery();
+				
 				while (rs.next()) 
 				{
-					idCompany = rs.getInt("id");
-				}
-				
-				String insertEmployeeSql = "INSERT INTO Employee (first_name, last_name, company_id) VALUES (?, ?, ?)";
-
-				statementInsertEmployee = dbConnection.prepareStatement(insertEmployeeSql,
-						Statement.RETURN_GENERATED_KEYS);
-
-				statementInsertEmployee.setString(1, employee.getFirstName());
-				statementInsertEmployee.setString(2, employee.getLastName());
-				statementInsertEmployee.setLong(3, idCompany);
-
-				statementInsertEmployee.executeUpdate(); 
-				
-				dbConnection.commit();
+					if(password.equals(rs.getString("password")))
+					{
+						user.setFirstName(rs.getString("first_name"));
+						user.setLastName(rs.getString("last_name"));
+						user.setEmail(rs.getString("email"));
+					}
+				}				
 				
 				rs.close();
-				statementSelectCompany.close();
-				statementInsertEmployee.close();
+				selectUserStatement.close();
 				dbConnection.close();
 			}
 			catch(SQLException se)
@@ -149,11 +118,8 @@ public class DatabaseManager {
 			{
 				try
 				{
-					if (statementSelectCompany != null)
-						statementSelectCompany.close();
-					
-					if (statementInsertEmployee != null)
-						statementInsertEmployee.close();
+					if (selectUserStatement != null)
+						selectUserStatement.close();
 					
 					if (dbConnection != null)
 						dbConnection.close();
@@ -164,106 +130,7 @@ public class DatabaseManager {
 					se.printStackTrace();
 				}
 			}
-		}
-		
-		public void persistNewCompany(Company company)
-		{
-			Connection dbConnection = null;
-			PreparedStatement statementInsertCompany = null;
-			try
-			{
-				dbConnection = getDBConnection();
-				
-				dbConnection.setAutoCommit(false);
-				
-				String insertEmployeeSql = "INSERT INTO Company (name) VALUES (?)";
-
-				statementInsertCompany = dbConnection.prepareStatement(insertEmployeeSql,
-						Statement.RETURN_GENERATED_KEYS);
-
-				statementInsertCompany.setString(1, company.getName());
-
-				statementInsertCompany.executeUpdate(); 
-				
-				dbConnection.commit();
-				
-				statementInsertCompany.close();
-				dbConnection.close();
-			}
-			catch(SQLException se)
-			{
-				// Handle errors for JDBC
-				se.printStackTrace();
-			}
-			finally
-			{
-				try
-				{
-					if (statementInsertCompany != null)
-						statementInsertCompany.close();
-					
-					if (dbConnection != null)
-						dbConnection.close();
-				}
-				catch(SQLException se)
-				{
-					// Handle errors for JDBC
-					se.printStackTrace();
-				}
-			}
-		}
-		
-		public void displayDITEmployees()
-		{
-			Connection dbConnection = null;
-			Statement statementSelectEmployees = null;
-			try
-			{
-				dbConnection = getDBConnection();
-
-				statementSelectEmployees = dbConnection.createStatement();
-
-				String selectJoinSql = "SELECT Employee.first_name, Employee.last_name "
-						+ "FROM Company " + "INNER JOIN Employee "
-						+ "ON Company.id=Employee.company_id "
-						+ "WHERE Company.name = 'DIT';";
-				ResultSet rs = statementSelectEmployees.executeQuery(selectJoinSql);
-
-				Company company = new Company("DIT");
-				while (rs.next()) {
-
-					Employee e = new Employee(rs.getString("first_name"), rs.getString("last_name"), company);
-					company.addEmployee(e);
-				}
-				company.displayEmployees();
-				
-				rs.close();
-				statementSelectEmployees.close();
-				dbConnection.close();
-			}
-			catch(SQLException se)
-			{
-				// Handle errors for JDBC
-				se.printStackTrace();
-			}
-			finally 
-			{
-				// finally block used to close resources
-
-				try 
-				{
-					if (statementSelectEmployees != null)
-						statementSelectEmployees.close();
-
-					if (dbConnection != null)
-						dbConnection.close();
-
-				} 
-				catch (SQLException se) 
-				{
-					se.printStackTrace();
-				}
-			}
+			return user;
 		}
 		
 		private static Connection getDBConnection() 
@@ -286,5 +153,4 @@ public class DatabaseManager {
 			return dbConnection;
 
 		}
-		*/
 }
