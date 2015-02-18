@@ -9,7 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
+//import javax.swing.border.EmptyBorder;
+
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,12 @@ import java.awt.event.ActionListener;
 public class WindowsManager {
 	
 	private static WindowsManager instance;
+	private JTextField registerFirstNameField;
+	private JTextField registerLastNameField;
+	private JTextField registerEmailAddressField;
+	private JPasswordField registerPasswordField;
+	private JPasswordField registerConfirmationField;
+	private JLabel registerMessageLabel;
 	
 	protected WindowsManager()
 	{
@@ -86,7 +93,7 @@ public class WindowsManager {
 		
 
 		JButton loginButton = new JButton("Login");
-		//updateNameButton.addActionListener(new UpdateNameActionListener());
+		loginButton.addActionListener(new LoginActionListener());
 		b3.add(loginButton);
 		
 		loginFieldsPanel.add(b3);
@@ -99,12 +106,6 @@ public class WindowsManager {
 		loginMesssagePanel.add(loginMessageLabel);
 		
 	//registerCard
-		JTextField registerFirstNameField;
-		JTextField registerLastNameField;
-		JTextField registerEmailAddressField;
-		JPasswordField registerPasswordField;
-		JPasswordField registerConfirmationField;
-		JLabel registerMessageLabel;
 		
 		//registerTitlePanel
 		JPanel registerTitlePanel = new JPanel();
@@ -154,9 +155,8 @@ public class WindowsManager {
 		b9.add(b7);
 		b9.add(b8);
 		
-
 		JButton registerButton = new JButton("Register");
-		//updateNameButton.addActionListener(new UpdateNameActionListener());
+		registerButton.addActionListener(new RegisterActionListener());
 		b9.add(registerButton);
 		
 		registerFieldsPanel.add(b9);
@@ -183,6 +183,44 @@ public class WindowsManager {
 	    mainFrame.getContentPane().add(contentPanel, BorderLayout.CENTER);
 		mainFrame.getContentPane().add(tabButtons, BorderLayout.NORTH);
 		mainFrame.setVisible(true);
+	}
+	
+	public void registerDisplay(String message)
+	{
+		registerMessageLabel.setText(message);
+	}
+	
+	public String getRegisterFirstName() 
+	{
+		return registerFirstNameField.getText();
+	}
+	
+	public String getRegisterLastName()
+	{
+		return registerLastNameField.getText();
+	}
+	
+	public String getRegisterEmailAddress()
+	{
+		return registerEmailAddressField.getText();
+	}
+	
+	public String getRegisterPassword()
+	{
+		return String.valueOf(registerPasswordField.getPassword());
+	}
+	
+	//true if password matches confirmation
+	public boolean checkPasswordConfirmation()
+	{
+		if(String.valueOf(this.registerPasswordField.getPassword()).equals(String.valueOf(this.registerConfirmationField.getPassword())))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 }
