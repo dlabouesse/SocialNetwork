@@ -11,11 +11,12 @@ public class User {
 	private String password;
 	private Set<User> friends;
 	
-	public User(String firstName, String lastName, String email)
+	public User(String firstName, String lastName, String email, String password)
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.password = password;
 		this.friends = new HashSet<User>();
 	}
 	public void addFriend(User user)
@@ -47,6 +48,14 @@ public class User {
 	public String getName()
 	{
 		return this.getFirstName() + " " + this.getLastName();
+	}
+	public String getEmail()
+	{
+		return this.email;
+	}
+	public String getPassword()
+	{
+		return this.password;
 	}
 
 	public Post createPost(String content, User recipient)

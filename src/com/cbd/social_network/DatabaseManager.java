@@ -28,6 +28,75 @@ public class DatabaseManager {
 			}
 			return instance;
 		}
+		
+		public void persistNewUser(User user)
+		{
+			Connection dbConnection = null;
+			PreparedStatement insertEmployeeStatement = null;
+			try
+			{
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String insertUser = "INSERT INTO user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
+
+				insertEmployeeStatement = dbConnection.prepareStatement(insertUser);
+				
+				insertEmployeeStatement.setString(1, user.getFirstName());
+				insertEmployeeStatement.setString(2, user.getLastName());
+				insertEmployeeStatement.setString(3, user.getEmail());
+				insertEmployeeStatement.setString(4, user.getPassword());
+
+				insertEmployeeStatement.executeUpdate(); 
+				
+				dbConnection.commit();
+				
+				insertEmployeeStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (insertEmployeeStatement != null)
+						insertEmployeeStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+		}
+		
+		private static Connection getDBConnection() 
+		{
+
+			Connection dbConnection = null;
+			try {
+
+				Class.forName(DB_DRIVER);
+				dbConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+				return dbConnection;
+
+			} catch (ClassNotFoundException e) {
+				// Handle errors for Class.forName
+				e.printStackTrace();
+			} catch (SQLException se) {
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			return dbConnection;
+
+		}
 		/*
 		public void persistNewEmployee(Employee employee)
 		{
