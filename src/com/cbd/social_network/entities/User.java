@@ -1,4 +1,4 @@
-package com.cbd.social_network;
+package com.cbd.social_network.entities;
 
 import java.util.HashSet;
 import java.util.Set;

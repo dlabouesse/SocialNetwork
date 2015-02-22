@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.cbd.social_network.entities.User;
+
 public class DatabaseManager {
 	// 1: DB Setup - URL's and credentials
 		private static final String DB_DRIVER = "com.mysql.jdbc.Driver";

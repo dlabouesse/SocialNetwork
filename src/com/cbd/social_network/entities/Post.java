@@ -1,4 +1,5 @@
-package com.cbd.social_network;
+package com.cbd.social_network.entities;
+
 
 public class Post {
 	private String content;

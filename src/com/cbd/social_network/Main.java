@@ -14,10 +14,9 @@ public class Main {
 		User u3 = new User("William", "Somerset", "william.somerset@email.ie", "william");
 		User u4 = new User("Calvin", "Candie", "calvin.candie@email.ie", "calvin");
 		User u5 = new User("Jules", "Winnfield", "jules.winnfield@email.ie", "jules");
-		User u6 = new User("David", "Mills", "david.mills@email.ie", "david");
-		User u7 = new User("Evey", "Hammond", "evey.hammond@email.ie", "evey");
-		User u8 = new User("Beatrix", "Kiddo", "beatrix.kiddo@email.ie", "beatrix");
-		User u9 = new User("Mia", "Wallace", "mia.wallac@email.ie", "mia");
+		User u6 = new User("Evey", "Hammond", "evey.hammond@email.ie", "evey");
+		User u7 = new User("Beatrix", "Kiddo", "beatrix.kiddo@email.ie", "beatrix");
+		User u8 = new User("Mia", "Wallace", "mia.wallac@email.ie", "mia");
 		*/
 		WindowsManager ui = WindowsManager.getInstance();
 		ui.loginWindow();
