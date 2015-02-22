@@ -25,4 +25,19 @@ public class Post {
 		if(this.recipient!=this.author)
 			System.out.println("Posted for "+this.recipient.getName()+".");
 	}
+	
+	public User getAuthor()
+	{
+		return this.author;
+	}
+	
+	public User getRecipient()
+	{
+		return this.recipient;
+	}
+	
+	public String getContent()
+	{
+		return this.content;
+	}
 }

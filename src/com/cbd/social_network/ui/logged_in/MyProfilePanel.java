@@ -11,13 +11,15 @@ import javax.swing.JTextField;
 
 import com.cbd.social_network.entities.User;
 
-public class MyProfile extends JPanel{
+public class MyProfilePanel extends JPanel{
 	/*
 	private JTextField loginEmailAddressField;
 	private JPasswordField loginPasswordField;
 	private JLabel loginMessageLabel;
 	*/
-	public MyProfile(User user)
+	private JTextField postField;
+	
+	public MyProfilePanel(User user)
 	{
 		/*
 		JPanel loginTitlePanel = new JPanel();
@@ -39,12 +41,12 @@ public class MyProfile extends JPanel{
 		Box b2 = Box.createHorizontalBox();
 		JLabel postLabel = new JLabel("New post:");
 		b2.add(postLabel);
-		JTextField postField = new JTextField();
+		postField = new JTextField();
 		b2.add(postField);
 		postField.setColumns(20);
 		
 		JButton postButton = new JButton("Post");
-		//postButton.addActionListener(new PostActionListener());
+		postButton.addActionListener(new PostActionListener(user));
 		
 		Box b3 = Box.createVerticalBox();
 		b3.add(b1);
@@ -71,4 +73,9 @@ public class MyProfile extends JPanel{
 		return String.valueOf(loginPasswordField.getPassword());
 	}
 */
+
+	public String getPost() 
+	{
+		return postField.getText();
+	}
 }
