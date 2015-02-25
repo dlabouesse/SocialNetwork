@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 
 import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
@@ -136,48 +137,83 @@ public class DatabaseManager {
 			return user;
 		}
 		
-		public void persistNewPost(Post post)
+		private User getUser(long id)
 		{
 			Connection dbConnection = null;
-			PreparedStatement selectAuthorStatement = null;
-			PreparedStatement selectRecipientStatement = null;
-			PreparedStatement insertPostStatement = null;
+			PreparedStatement selectUserStatement = null;
+			User user = new User();
+			
 			try
 			{
-				
 				dbConnection = getDBConnection();
 				dbConnection.setAutoCommit(false);
 				
-				String selectAuthor = "SELECT id FROM user WHERE email = ?";
-				selectAuthorStatement = dbConnection.prepareStatement(selectAuthor);
+				String selectUser = "SELECT first_name, last_name, email FROM user WHERE id = ?";
+
+				selectUserStatement = dbConnection.prepareStatement(selectUser);
 				
-				selectAuthorStatement.setString(1, post.getAuthor().getEmail());
-				ResultSet rs = selectAuthorStatement.executeQuery();
+				selectUserStatement.setLong(1, id);
+
+				ResultSet rs = selectUserStatement.executeQuery();
 				
-				long authorId=-1;
-				long recipientId=-1;
 				while (rs.next()) 
 				{
-					authorId=rs.getLong("id");
-				}	
-				//If the recipient is the author
-				if(post.getAuthor().getEmail().equals(post.getRecipient().getEmail()))
+					user.setFirstName(rs.getString("first_name"));
+					user.setLastName(rs.getString("last_name"));
+					user.setEmail(rs.getString("email"));
+				}				
+				
+				rs.close();
+				selectUserStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
 				{
-					recipientId=authorId;
+					if (selectUserStatement != null)
+						selectUserStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
 				}
-				else //Get the recipient's id
+				catch(SQLException se)
 				{
-					String selectRecipient = "SELECT id FROM user WHERE email = ?";
-					selectRecipientStatement = dbConnection.prepareStatement(selectRecipient);
-					
-					selectRecipientStatement.setString(1, post.getRecipient().getEmail());
-					rs = selectRecipientStatement.executeQuery();
-					
-					while (rs.next()) 
-					{
-						recipientId=rs.getLong("id");
-					}	
+					// Handle errors for JDBC
+					se.printStackTrace();
 				}
+			}
+			return user;
+		}
+		
+		public void persistNewPost(Post post)
+		{
+			Connection dbConnection = null;
+			PreparedStatement insertPostStatement = null;
+			long authorId=-1;
+			long recipientId=-1;
+			
+			authorId=getUserId(post.getAuthor());
+			
+			//If the recipient is the author
+			if(post.getAuthor().getEmail().equals(post.getRecipient().getEmail()))
+			{
+				recipientId=authorId;
+			}
+			else //Get the recipient's id
+			{
+				recipientId=getUserId(post.getRecipient());
+			}
+			
+			try
+			{	
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
 				
 				String insertPost = "INSERT INTO post (content, author_id, recipient_id) VALUES (?, ?, ?)";
 				
@@ -190,13 +226,7 @@ public class DatabaseManager {
 				insertPostStatement.executeUpdate(); 
 				
 				dbConnection.commit();
-				
-				rs.close();
-				selectAuthorStatement.close();
-				selectRecipientStatement.close();
-				insertPostStatement.close();
-				dbConnection.close();
-				
+
 				insertPostStatement.close();
 				dbConnection.close();
 			}
@@ -208,13 +238,7 @@ public class DatabaseManager {
 			finally
 			{
 				try
-				{
-					if (selectAuthorStatement != null)
-						selectAuthorStatement.close();
-					
-					if (selectRecipientStatement != null)
-						selectRecipientStatement.close();
-					
+				{	
 					if (insertPostStatement != null)
 						insertPostStatement.close();
 					
@@ -227,6 +251,128 @@ public class DatabaseManager {
 					se.printStackTrace();
 				}
 			}
+		}
+	
+		public HashSet<Post> retrievePosts(User user)
+		{
+			Connection dbConnection = null;
+			PreparedStatement selectPostsStatement = null;
+			HashSet<Post> posts = new HashSet<Post>();
+			
+			long userId=-1;
+			
+			userId=getUserId(user);
+			
+			try
+			{
+				
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String selectPosts = "SELECT content, author_id, recipient_id FROM post WHERE author_id = ? OR recipient_id = ?";
+				selectPostsStatement = dbConnection.prepareStatement(selectPosts);
+				
+				selectPostsStatement.setLong(1, userId);
+				selectPostsStatement.setLong(2, userId);
+				ResultSet rs = selectPostsStatement.executeQuery();
+				
+				while (rs.next()) 
+				{
+					if(rs.getLong("author_id")==userId && rs.getLong("recipient_id")==userId)
+					{
+						posts.add(new Post(rs.getString("content"), user));
+					}
+					else if(rs.getLong("author_id")==userId && rs.getLong("recipient_id")!=userId)
+					{
+						posts.add(new Post(rs.getString("content"), user, getUser(rs.getLong("recipient_id"))));
+					}
+					else if(rs.getLong("author_id")!=userId && rs.getLong("recipient_id")==userId)
+					{
+						posts.add(new Post(rs.getString("content"), getUser(rs.getLong("recipient_id")), user));
+					}
+					else
+					{
+						System.out.println("Error in retrieving posts.");
+					}
+					
+					//post.add(new Post()
+				}	
+				
+				rs.close();
+				selectPostsStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (selectPostsStatement != null)
+						selectPostsStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+			return posts;
+		}
+		
+		private long getUserId(User user)
+		{
+			Connection dbConnection = null;
+			PreparedStatement selectUserStatement = null;
+			long id=-1;
+			try
+			{
+				
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String selectUser = "SELECT id FROM user WHERE email = ?";
+				selectUserStatement = dbConnection.prepareStatement(selectUser);
+				
+				selectUserStatement.setString(1, user.getEmail());
+				ResultSet rs = selectUserStatement.executeQuery();
+				
+				while (rs.next()) 
+				{
+					id=rs.getLong("id");
+				}
+				
+				selectUserStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (selectUserStatement != null)
+						selectUserStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+			return id;
 		}
 		
 		private static Connection getDBConnection() 
