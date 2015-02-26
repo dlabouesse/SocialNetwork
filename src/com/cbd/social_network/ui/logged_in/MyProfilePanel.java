@@ -1,6 +1,8 @@
 package com.cbd.social_network.ui.logged_in;
 
 import java.awt.BorderLayout;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -9,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.cbd.social_network.DatabaseManager;
+import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
 
 public class MyProfilePanel extends JPanel{
@@ -21,18 +25,11 @@ public class MyProfilePanel extends JPanel{
 	
 	public MyProfilePanel(User user)
 	{
-		/*
-		JPanel loginTitlePanel = new JPanel();
-		this.add(loginTitlePanel, BorderLayout.NORTH);
-		JLabel loginTitleLabel = new JLabel("Please login to access the application");
-		loginTitlePanel.add(loginTitleLabel);
-		*/
-		
-		//loginFieldsPanel
+
 		JPanel userDetails = new JPanel();
 		this.add(userDetails, BorderLayout.NORTH);
 
-		Box b1 = Box.createHorizontalBox();
+		Box b1 = Box.createVerticalBox();
 		JLabel name = new JLabel(user.getName());
 		b1.add(name);
 		JLabel email = new JLabel(user.getEmail());
@@ -56,23 +53,23 @@ public class MyProfilePanel extends JPanel{
 		userDetails.add(b3);
 		
 		JPanel lastPosts = new JPanel();
-		this.add(userDetails, BorderLayout.CENTER);
+		this.add(lastPosts, BorderLayout.CENTER);
+		
+		Box b4 = Box.createVerticalBox();
+		lastPosts.add(b4);
+		
+		HashSet<Post> posts = DatabaseManager.getInstance().retrievePosts(user);
+		
+		Iterator<Post> it = posts.iterator();
+		Post currentPost;
+	    while(it.hasNext())
+	    {
+	    	currentPost=it.next();
+	    	b4.add(new JLabel(currentPost.getAuthor().getName()+" to "+currentPost.getRecipient().getName()));
+	    	b4.add(new JLabel(currentPost.getContent()));
+	    }
 		
 	}
-	/*
-	public String getLoginEmail()
-	{
-		return loginEmailAddressField.getText();
-	}
-	public void setLoginMessage(String message)
-	{
-		loginMessageLabel.setText(message);
-	}
-	public String getLoginPassword()
-	{
-		return String.valueOf(loginPasswordField.getPassword());
-	}
-*/
 
 	public String getPost() 
 	{
