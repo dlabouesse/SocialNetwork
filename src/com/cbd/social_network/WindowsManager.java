@@ -35,7 +35,7 @@ public class WindowsManager {
 	{
 		mainFrame = new JFrame("My Social Network");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setBounds(100, 100, 450, 350);
+		mainFrame.setSize(800,700);
 
 		tabs = new JTabbedPane();
 		tabs.add("Login", new LoginPanel());

@@ -1,14 +1,18 @@
 package com.cbd.social_network.ui.logged_in;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.cbd.social_network.DatabaseManager;
@@ -25,6 +29,7 @@ public class MyProfilePanel extends JPanel{
 	
 	public MyProfilePanel(User user)
 	{
+		this.setLayout(new BorderLayout());
 
 		JPanel userDetails = new JPanel();
 		this.add(userDetails, BorderLayout.NORTH);
@@ -36,8 +41,8 @@ public class MyProfilePanel extends JPanel{
 		b1.add(email);
 		
 		Box b2 = Box.createHorizontalBox();
-		JLabel postLabel = new JLabel("New post:");
-		b2.add(postLabel);
+		JLabel newPostLabel = new JLabel("New post:");
+		b2.add(newPostLabel);
 		postField = new JTextField();
 		b2.add(postField);
 		postField.setColumns(20);
@@ -52,21 +57,34 @@ public class MyProfilePanel extends JPanel{
 		
 		userDetails.add(b3);
 		
-		JPanel lastPosts = new JPanel();
+		Box lastPosts = Box.createVerticalBox();
 		this.add(lastPosts, BorderLayout.CENTER);
 		
-		Box b4 = Box.createVerticalBox();
-		lastPosts.add(b4);
+
+		lastPosts.setBorder(BorderFactory.createTitledBorder("Last Posts"));
 		
 		HashSet<Post> posts = DatabaseManager.getInstance().retrievePosts(user);
 		
 		Iterator<Post> it = posts.iterator();
-		Post currentPost;
+		
 	    while(it.hasNext())
 	    {
-	    	currentPost=it.next();
-	    	b4.add(new JLabel(currentPost.getAuthor().getName()+" to "+currentPost.getRecipient().getName()));
-	    	b4.add(new JLabel(currentPost.getContent()));
+	    	Post currentPost=it.next();
+	    	JTextArea postContent = new JTextArea(currentPost.getContent());
+	    	postContent.setBackground(lastPosts.getBackground());
+	    	postContent.setEditable(false);
+	    	
+	    	String postTitle;
+	    	if(currentPost.getAuthor().getName().equals(user.getName()) && currentPost.getRecipient().getName().equals(user.getName()))
+	    		postTitle="Status update";
+	    	else if(currentPost.getRecipient().getName().equals(user.getName()))
+	    		postTitle="From "+currentPost.getRecipient().getName();
+	    	else
+	    		postTitle="To "+currentPost.getRecipient().getName();
+	    	
+	    	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
+	    	
+	    	lastPosts.add(postContent);
 	    }
 		
 	}

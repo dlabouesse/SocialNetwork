@@ -20,6 +20,8 @@ public class RegisterPanel extends JPanel{
 	
 	public RegisterPanel()
 	{
+		this.setLayout(new BorderLayout());
+		
 		JPanel registerTitlePanel = new JPanel();
 		this.add(registerTitlePanel, BorderLayout.NORTH);
 		JLabel registerTitleLabel = new JLabel("Please complete this form to register");

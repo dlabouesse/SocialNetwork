@@ -17,6 +17,8 @@ public class LoginPanel extends JPanel{
 	
 	public LoginPanel()
 	{
+		this.setLayout(new BorderLayout());
+		
 		JPanel loginTitlePanel = new JPanel();
 		this.add(loginTitlePanel, BorderLayout.NORTH);
 		JLabel loginTitleLabel = new JLabel("Please login to access the application");
