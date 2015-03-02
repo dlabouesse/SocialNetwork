@@ -6,6 +6,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 
 import com.cbd.social_network.entities.User;
+import com.cbd.social_network.ui.logged_in.MyFriendsPanel;
 import com.cbd.social_network.ui.logged_in.MyProfilePanel;
 import com.cbd.social_network.ui.non_logged.LoginPanel;
 import com.cbd.social_network.ui.non_logged.RegisterPanel;
@@ -49,8 +50,8 @@ public class WindowsManager {
 	public void logedInWindow(User user)
 	{
 		tabs = new JTabbedPane();
-		tabs.add("My profile", new MyProfilePanel(user));
-		tabs.add("Onglet n° 2", new JPanel());
+		tabs.add(user.getName(), new MyProfilePanel(user));
+		tabs.add("My friends", new MyFriendsPanel(user));
 		
 		mainFrame.getContentPane().add(tabs);
 	}

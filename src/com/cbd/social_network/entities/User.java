@@ -1,5 +1,6 @@
 package com.cbd.social_network.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
@@ -9,7 +10,7 @@ public class User {
 	private String lastName;
 	private String email;
 	private String password;
-	private Set<User> friends;
+	private ArrayList<User> friends;
 	
 	public User()
 	{
@@ -17,7 +18,7 @@ public class User {
 		this.lastName = null;
 		this.email = null;
 		this.password = null;
-		this.friends = new HashSet<User>();
+		this.friends = new ArrayList<User>();
 	}
 	public User(String firstName, String lastName, String email, String password)
 	{
@@ -25,7 +26,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.friends = new HashSet<User>();
+		this.friends = new ArrayList<User>();
 	}
 	public void addFriend(User user)
 	{
@@ -35,6 +36,16 @@ public class User {
 	public void removeFriend(User user)
 	{
 		this.friends.remove(user);
+	}
+	
+	public void setFriends(ArrayList<User> friends)
+	{
+		this.friends=friends;
+	}
+	
+	public ArrayList<User> getFriends()
+	{
+		return friends;
 	}
 	
 	public void displayFriends()

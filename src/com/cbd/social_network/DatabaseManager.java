@@ -33,6 +33,27 @@ public class DatabaseManager {
 			return instance;
 		}
 		
+		private static Connection getDBConnection() 
+		{
+
+			Connection dbConnection = null;
+			try {
+
+				Class.forName(DB_DRIVER);
+				dbConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+				return dbConnection;
+
+			} catch (ClassNotFoundException e) {
+				// Handle errors for Class.forName
+				e.printStackTrace();
+			} catch (SQLException se) {
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			return dbConnection;
+
+		}
+		
 		public void persistNewUser(User user)
 		{
 			Connection dbConnection = null;
@@ -107,6 +128,7 @@ public class DatabaseManager {
 						user.setFirstName(rs.getString("first_name"));
 						user.setLastName(rs.getString("last_name"));
 						user.setEmail(rs.getString("email"));
+						user.setFriends(getFriends(user));
 					}
 				}				
 				
@@ -162,6 +184,7 @@ public class DatabaseManager {
 					user.setFirstName(rs.getString("first_name"));
 					user.setLastName(rs.getString("last_name"));
 					user.setEmail(rs.getString("email"));
+					user.setFriends(getFriends(user));
 				}				
 				
 				rs.close();
@@ -453,24 +476,62 @@ public class DatabaseManager {
 			return id;
 		}
 		
-		private static Connection getDBConnection() 
+		private ArrayList<User> getFriends(User user) 
 		{
-
 			Connection dbConnection = null;
-			try {
-
-				Class.forName(DB_DRIVER);
-				dbConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-				return dbConnection;
-
-			} catch (ClassNotFoundException e) {
-				// Handle errors for Class.forName
-				e.printStackTrace();
-			} catch (SQLException se) {
+			PreparedStatement selectFriendsStatement = null;
+			ArrayList<User> friends = new ArrayList<User>();
+			
+			long userId=-1;
+			
+			userId=getUserId(user);
+			
+			try
+			{
+				
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String selectFriends = "SELECT user.first_name, user.last_name, user.email FROM friendship INNER JOIN user ON friendship.friend_id = user.id WHERE friendship.user_id = ?";
+				selectFriendsStatement = dbConnection.prepareStatement(selectFriends);
+				
+				selectFriendsStatement.setLong(1, userId);
+				ResultSet rs = selectFriendsStatement.executeQuery();
+				
+				while (rs.next()) 
+				{
+					User currentFriend = new User();
+					currentFriend.setFirstName(rs.getString("user.first_name"));
+					currentFriend.setLastName(rs.getString("user.last_name"));
+					currentFriend.setEmail(rs.getString("user.email"));
+					friends.add(currentFriend);
+				}	
+				
+				rs.close();
+				selectFriendsStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
 				// Handle errors for JDBC
 				se.printStackTrace();
 			}
-			return dbConnection;
-
+			finally
+			{
+				try
+				{
+					if (selectFriendsStatement != null)
+						selectFriendsStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+			return friends;
 		}
 }

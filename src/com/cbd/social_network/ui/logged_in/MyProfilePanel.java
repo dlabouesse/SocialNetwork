@@ -1,10 +1,7 @@
 package com.cbd.social_network.ui.logged_in;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -12,7 +9,6 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -21,11 +17,7 @@ import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
 
 public class MyProfilePanel extends JPanel{
-	/*
-	private JTextField loginEmailAddressField;
-	private JPasswordField loginPasswordField;
-	private JLabel loginMessageLabel;
-	*/
+	
 	private JTextField postField;
 	private Box lastPosts;
 	
