@@ -113,7 +113,7 @@ public class DatabaseManager {
 				dbConnection = getDBConnection();
 				dbConnection.setAutoCommit(false);
 				
-				String selectUser = "SELECT first_name, last_name, email, password FROM user WHERE email = ?";
+				String selectUser = "SELECT id, first_name, last_name, email, password FROM user WHERE email = ?";
 
 				selectUserStatement = dbConnection.prepareStatement(selectUser);
 				
@@ -128,7 +128,7 @@ public class DatabaseManager {
 						user.setFirstName(rs.getString("first_name"));
 						user.setLastName(rs.getString("last_name"));
 						user.setEmail(rs.getString("email"));
-						user.setFriends(getFriends(user));
+						user.setFriends(getFriends(rs.getLong("id")));
 					}
 				}				
 				
@@ -184,7 +184,6 @@ public class DatabaseManager {
 					user.setFirstName(rs.getString("first_name"));
 					user.setLastName(rs.getString("last_name"));
 					user.setEmail(rs.getString("email"));
-					user.setFriends(getFriends(user));
 				}				
 				
 				rs.close();
@@ -476,15 +475,12 @@ public class DatabaseManager {
 			return id;
 		}
 		
-		private ArrayList<User> getFriends(User user) 
+		private ArrayList<User> getFriends(long id) 
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectFriendsStatement = null;
 			ArrayList<User> friends = new ArrayList<User>();
 			
-			long userId=-1;
-			
-			userId=getUserId(user);
 			
 			try
 			{
@@ -495,7 +491,7 @@ public class DatabaseManager {
 				String selectFriends = "SELECT user.first_name, user.last_name, user.email FROM friendship INNER JOIN user ON friendship.friend_id = user.id WHERE friendship.user_id = ?";
 				selectFriendsStatement = dbConnection.prepareStatement(selectFriends);
 				
-				selectFriendsStatement.setLong(1, userId);
+				selectFriendsStatement.setLong(1, id);
 				ResultSet rs = selectFriendsStatement.executeQuery();
 				
 				while (rs.next()) 
@@ -533,5 +529,62 @@ public class DatabaseManager {
 				}
 			}
 			return friends;
+		}
+
+		public ArrayList<User> searchUsers(String search) 
+		{
+			Connection dbConnection = null;
+			PreparedStatement selectMatchingUsersStatement = null;
+			ArrayList<User> results = new ArrayList<User>();
+			
+			
+			try
+			{
+				
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String selectMatchingUsers = "SELECT first_name, last_name, email FROM user WHERE first_name LIKE ? OR last_name LIKE ?";
+				selectMatchingUsersStatement = dbConnection.prepareStatement(selectMatchingUsers);
+				
+				selectMatchingUsersStatement.setString(1, "%"+search+"%");
+				selectMatchingUsersStatement.setString(2, "%"+search+"%");
+				ResultSet rs = selectMatchingUsersStatement.executeQuery();
+				
+				while (rs.next()) 
+				{
+					User currentResult = new User();
+					currentResult.setFirstName(rs.getString("user.first_name"));
+					currentResult.setLastName(rs.getString("user.last_name"));
+					currentResult.setEmail(rs.getString("user.email"));
+					results.add(currentResult);
+				}	
+				
+				rs.close();
+				selectMatchingUsersStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (selectMatchingUsersStatement != null)
+						selectMatchingUsersStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+			return results;
 		}
 }

@@ -1,9 +1,12 @@
 package com.cbd.social_network.ui.logged_in;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -13,7 +16,8 @@ import com.cbd.social_network.entities.User;
 
 public class MyFriendsPanel extends JPanel{
 
-	private JTextField searchForUserField;
+	private JTextField searchUserField;
+	private Box searchResults;
 	
 	public MyFriendsPanel(User user)
 	{
@@ -32,16 +36,66 @@ public class MyFriendsPanel extends JPanel{
 	    	friendsList.add(friendName);
 	    }
 		
-		JPanel searchForUser = new JPanel();
-		searchForUser.setBorder(BorderFactory.createTitledBorder("Search for someone"));
+		JPanel searchUser = new JPanel();
+		searchUser.setBorder(BorderFactory.createTitledBorder("Search for someone"));
 		
-		searchForUserField = new JTextField();
-		searchForUser.add(searchForUserField);
-		searchForUserField.setColumns(20);
+		searchUser.setLayout(new BorderLayout());
 		
-		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, friendsList, searchForUser);
+		Box b1 = Box.createHorizontalBox();
+		
+		searchUserField = new JTextField();
+		b1.add(searchUserField);
+		searchUserField.setColumns(20);
+		
+		JButton searchUserButton = new JButton("Search");
+		b1.add(searchUserButton);
+		searchUserButton.addActionListener(new SearchUserActionListener(user));
+		
+		searchUser.add(b1, BorderLayout.NORTH);
+		
+		searchResults = Box.createVerticalBox();
+		searchUser.add(searchResults, BorderLayout.CENTER);
+		
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, friendsList, searchUser);
 		
 		this.add(split, BorderLayout.CENTER);
 		
+	}
+	
+	public String getUser()
+	{
+		return searchUserField.getText();
+	}
+
+	public void displayResults(ArrayList<User> results) 
+	{
+		searchResults.removeAll();
+		
+		Iterator<User> it = results.iterator();
+		
+	    while(it.hasNext())
+	    {
+	    	User currentResult=it.next();
+	    	
+	    	Box b = Box.createHorizontalBox();
+	    	JLabel currentResultName = new JLabel(currentResult.getName());
+	    	b.add(currentResultName);
+	    	JButton addFriendButton = new JButton("Add friend");
+	    	b.add(addFriendButton);
+	    	
+	    	searchResults.add(b);
+	    }
+	    searchResults.repaint();
+	    searchResults.revalidate();
+	}
+
+	public void displayError(String message) 
+	{
+		searchResults.removeAll();
+		
+	    searchResults.add(new JLabel(message));
+
+	    searchResults.repaint();
+	    searchResults.revalidate();
 	}
 }
