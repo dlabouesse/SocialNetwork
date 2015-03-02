@@ -29,7 +29,7 @@ public class PostActionListener implements ActionListener{
 		
 		DatabaseManager.getInstance().persistNewPost(post);
 		
-		//TODO Update list of posts
+		myProfilePanel.updatePosts(this.user);
 	}
 
 }

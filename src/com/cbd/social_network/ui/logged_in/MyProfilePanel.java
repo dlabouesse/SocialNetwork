@@ -3,6 +3,7 @@ package com.cbd.social_network.ui.logged_in;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -26,6 +27,7 @@ public class MyProfilePanel extends JPanel{
 	private JLabel loginMessageLabel;
 	*/
 	private JTextField postField;
+	private Box lastPosts;
 	
 	public MyProfilePanel(User user)
 	{
@@ -57,13 +59,13 @@ public class MyProfilePanel extends JPanel{
 		
 		userDetails.add(b3);
 		
-		Box lastPosts = Box.createVerticalBox();
+		lastPosts = Box.createVerticalBox();
 		this.add(lastPosts, BorderLayout.CENTER);
 		
 
 		lastPosts.setBorder(BorderFactory.createTitledBorder("Last Posts"));
 		
-		HashSet<Post> posts = DatabaseManager.getInstance().retrievePosts(user);
+		ArrayList<Post> posts = DatabaseManager.getInstance().retrievePosts(user);
 		
 		Iterator<Post> it = posts.iterator();
 		
@@ -87,6 +89,29 @@ public class MyProfilePanel extends JPanel{
 	    	lastPosts.add(postContent);
 	    }
 		
+	}
+	
+	public void updatePosts(User user)
+	{
+		Post post = DatabaseManager.getInstance().retrieveLastPost(user);
+		
+    	JTextArea postContent = new JTextArea(post.getContent());
+    	postContent.setBackground(lastPosts.getBackground());
+    	postContent.setEditable(false);
+    	
+    	String postTitle;
+    	if(post.getAuthor().getName().equals(user.getName()) && post.getRecipient().getName().equals(user.getName()))
+    		postTitle="Status update";
+    	else if(post.getRecipient().getName().equals(user.getName()))
+    		postTitle="From "+post.getRecipient().getName();
+    	else
+    		postTitle="To "+post.getRecipient().getName();
+    	
+    	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
+    	
+    	lastPosts.add(postContent, 0);
+    	lastPosts.revalidate();
+    	postField.setText("");
 	}
 
 	public String getPost() 

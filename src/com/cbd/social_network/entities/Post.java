@@ -6,6 +6,12 @@ public class Post {
 	private User author;
 	private User recipient;
 	
+	public Post()
+	{
+		this.content = null;
+		this.author = null;
+		this.recipient = null;
+	}
 	public Post(String content, User author, User recipient)
 	{
 		this.content = content;
@@ -26,16 +32,28 @@ public class Post {
 			System.out.println("Posted for "+this.recipient.getName()+".");
 	}
 	
+	public void setAuthor(User author)
+	{
+		this.author = author;
+	}
 	public User getAuthor()
 	{
 		return this.author;
 	}
 	
+	public void setRecipient(User recipient)
+	{
+		this.recipient = recipient;
+	}
 	public User getRecipient()
 	{
 		return this.recipient;
 	}
 	
+	public void setContent(String content)
+	{
+		this.content = content;
+	}
 	public String getContent()
 	{
 		return this.content;

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.cbd.social_network.entities.Post;
@@ -253,11 +254,11 @@ public class DatabaseManager {
 			}
 		}
 	
-		public HashSet<Post> retrievePosts(User user)
+		public ArrayList<Post> retrievePosts(User user)
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectPostsStatement = null;
-			HashSet<Post> posts = new HashSet<Post>();
+			ArrayList<Post> posts = new ArrayList<Post>();
 			
 			long userId=-1;
 			
@@ -269,7 +270,7 @@ public class DatabaseManager {
 				dbConnection = getDBConnection();
 				dbConnection.setAutoCommit(false);
 				
-				String selectPosts = "SELECT content, author_id, recipient_id FROM post WHERE author_id = ? OR recipient_id = ?";
+				String selectPosts = "SELECT content, author_id, recipient_id FROM post WHERE author_id = ? OR recipient_id = ? ORDER BY id DESC";
 				selectPostsStatement = dbConnection.prepareStatement(selectPosts);
 				
 				selectPostsStatement.setLong(1, userId);
@@ -324,6 +325,83 @@ public class DatabaseManager {
 				}
 			}
 			return posts;
+		}
+		
+		public Post retrieveLastPost(User user)
+		{
+			Connection dbConnection = null;
+			PreparedStatement selectPostStatement = null;
+			Post post = new Post();
+			
+			long userId=-1;
+			
+			userId=getUserId(user);
+			
+			try
+			{
+				
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String selectPosts = "SELECT content, author_id, recipient_id FROM post WHERE author_id = ? OR recipient_id = ? ORDER BY id DESC LIMIT 0, 1";
+				selectPostStatement = dbConnection.prepareStatement(selectPosts);
+				
+				selectPostStatement.setLong(1, userId);
+				selectPostStatement.setLong(2, userId);
+				ResultSet rs = selectPostStatement.executeQuery();
+				
+				while (rs.next()) 
+				{
+					if(rs.getLong("author_id")==userId && rs.getLong("recipient_id")==userId)
+					{
+						post.setContent(rs.getString("content"));
+						post.setAuthor(user);
+						post.setRecipient(user);
+					}
+					else if(rs.getLong("author_id")==userId && rs.getLong("recipient_id")!=userId)
+					{
+						post.setContent(rs.getString("content"));
+						post.setAuthor(user);
+						post.setRecipient(getUser(rs.getLong("recipient_id")));
+					}
+					else if(rs.getLong("author_id")!=userId && rs.getLong("recipient_id")==userId)
+					{
+						post.setContent(rs.getString("content"));
+						post.setAuthor(getUser(rs.getLong("recipient_id")));
+						post.setRecipient(user);
+					}
+					else
+					{
+						System.out.println("Error in retrieving last post.");
+					}
+				}	
+				
+				rs.close();
+				selectPostStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (selectPostStatement != null)
+						selectPostStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+			return post;
 		}
 		
 		private long getUserId(User user)
