@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import com.cbd.social_network.entities.Post;
@@ -311,7 +312,7 @@ public class DatabaseManager {
 					}
 					else if(rs.getLong("author_id")!=userId && rs.getLong("recipient_id")==userId)
 					{
-						posts.add(new Post(rs.getString("content"), getUser(rs.getLong("recipient_id")), user));
+						posts.add(new Post(rs.getString("content"), getUser(rs.getLong("author_id")), user));
 					}
 					else
 					{
@@ -389,7 +390,7 @@ public class DatabaseManager {
 					else if(rs.getLong("author_id")!=userId && rs.getLong("recipient_id")==userId)
 					{
 						post.setContent(rs.getString("content"));
-						post.setAuthor(getUser(rs.getLong("recipient_id")));
+						post.setAuthor(getUser(rs.getLong("author_id")));
 						post.setRecipient(user);
 					}
 					else
@@ -645,5 +646,87 @@ public class DatabaseManager {
 					se.printStackTrace();
 				}
 			}
+		}
+
+		public ArrayList<Post> retrieveHotPosts(User loggedInUser) 
+		{
+			Connection dbConnection = null;
+			PreparedStatement selectHotPostsStatement = null;
+			
+			long loggedInUserId=getUserId(loggedInUser);
+			HashSet<Long> idList = new HashSet<Long>();
+			
+			idList.add(loggedInUserId);
+			
+			Iterator<User> it = loggedInUser.getFriends().iterator();
+
+		    while(it.hasNext())
+		    {
+		    	idList.add(getUserId(it.next()));
+		    }
+		    
+		    ArrayList<Post> hotPosts = new ArrayList<Post>();
+		    
+		    try
+			{
+				
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String selectHotPosts = "SELECT content, author_id, recipient_id FROM post ORDER BY id DESC";
+				selectHotPostsStatement = dbConnection.prepareStatement(selectHotPosts);
+				
+				ResultSet rs = selectHotPostsStatement.executeQuery();
+				
+				while (rs.next()) 
+				{
+					if(idList.contains(rs.getLong("author_id")) || idList.contains(rs.getLong("recipient_id")))
+					{
+						if(rs.getLong("author_id")==loggedInUserId && rs.getLong("recipient_id")==loggedInUserId)
+						{
+							hotPosts.add(new Post(rs.getString("content"), loggedInUser));
+						}
+						else if(rs.getLong("author_id")==loggedInUserId && rs.getLong("recipient_id")!=loggedInUserId)
+						{
+							hotPosts.add(new Post(rs.getString("content"), loggedInUser, getUser(rs.getLong("recipient_id"))));
+						}
+						else if(rs.getLong("author_id")!=loggedInUserId && rs.getLong("author_id")==loggedInUserId)
+						{
+							hotPosts.add(new Post(rs.getString("content"), getUser(rs.getLong("author_id")), loggedInUser));
+						}
+						else
+						{
+							hotPosts.add(new Post(rs.getString("content"), getUser(rs.getLong("author_id")), getUser(rs.getLong("recipient_id"))));
+						}
+					}
+				}	
+				
+				rs.close();
+				selectHotPostsStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (selectHotPostsStatement != null)
+						selectHotPostsStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+			
+			return hotPosts;
 		}
 }

@@ -30,6 +30,9 @@ public class PostActionListener implements ActionListener{
 		DatabaseManager.getInstance().persistNewPost(post);
 		
 		myProfilePanel.updatePosts(this.user);
+		
+		HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getOnglets().getComponent(2);
+		hotPostsPanel.updateHotPosts();
 	}
 
 }

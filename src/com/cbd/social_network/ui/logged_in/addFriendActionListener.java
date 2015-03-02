@@ -28,6 +28,9 @@ public class addFriendActionListener implements ActionListener
 		myFriendsPanel.displayError(friend.getName()+" is now your friend!");
 		myFriendsPanel.updateFriend(friend);
 		ui.getLoggedInUser().addFriend(friend);
+
+		HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getOnglets().getComponent(2);
+		hotPostsPanel.updateHotPosts();
 	}
 
 }
