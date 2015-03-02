@@ -10,7 +10,7 @@ import com.cbd.social_network.entities.User;
 
 public class SearchUserActionListener implements ActionListener{
 	
-	SearchUserActionListener(User user)
+	SearchUserActionListener()
 	{
 	}
 	
@@ -19,10 +19,10 @@ public class SearchUserActionListener implements ActionListener{
 		WindowsManager ui = WindowsManager.getInstance();
 		
 		MyFriendsPanel myFriendsPanel =(MyFriendsPanel)ui.getOnglets().getComponent(1);
-		
-		if(myFriendsPanel.getUser().length() > 2)
+		//TODO use config file for min length
+		if(myFriendsPanel.getSearchString().length() > 0)
 		{
-			ArrayList<User> results = DatabaseManager.getInstance().searchUsers(myFriendsPanel.getUser());
+			ArrayList<User> results = DatabaseManager.getInstance().searchUsers(ui.getLoggedInUser(), myFriendsPanel.getSearchString());
 			if (results.size()==0)
 				myFriendsPanel.displayError("No results found!");
 			else

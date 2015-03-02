@@ -12,19 +12,23 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
+import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
 
 public class MyFriendsPanel extends JPanel{
 
 	private JTextField searchUserField;
 	private Box searchResults;
+	private Box friendsList;
 	
 	public MyFriendsPanel(User user)
 	{
 		this.setLayout(new BorderLayout());
 		
-		JPanel friendsList = new JPanel();
-		friendsList.setBorder(BorderFactory.createTitledBorder("My Friends"));
+		JPanel friendsPanel = new JPanel();
+		friendsPanel.setBorder(BorderFactory.createTitledBorder("My Friends"));
+		friendsList = Box.createVerticalBox();
+		friendsPanel.add(friendsList);
 		
 		Iterator<User> it = user.getFriends().iterator();
 		
@@ -49,20 +53,21 @@ public class MyFriendsPanel extends JPanel{
 		
 		JButton searchUserButton = new JButton("Search");
 		b1.add(searchUserButton);
-		searchUserButton.addActionListener(new SearchUserActionListener(user));
+		searchUserButton.addActionListener(new SearchUserActionListener());
 		
 		searchUser.add(b1, BorderLayout.NORTH);
 		
 		searchResults = Box.createVerticalBox();
 		searchUser.add(searchResults, BorderLayout.CENTER);
 		
-		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, friendsList, searchUser);
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, friendsPanel, searchUser);
+		split.setDividerLocation(380); 
 		
 		this.add(split, BorderLayout.CENTER);
 		
 	}
 	
-	public String getUser()
+	public String getSearchString()
 	{
 		return searchUserField.getText();
 	}
@@ -81,6 +86,7 @@ public class MyFriendsPanel extends JPanel{
 	    	JLabel currentResultName = new JLabel(currentResult.getName());
 	    	b.add(currentResultName);
 	    	JButton addFriendButton = new JButton("Add friend");
+	    	addFriendButton.addActionListener(new addFriendActionListener(WindowsManager.getInstance().getLoggedInUser(), currentResult));
 	    	b.add(addFriendButton);
 	    	
 	    	searchResults.add(b);
@@ -97,5 +103,10 @@ public class MyFriendsPanel extends JPanel{
 
 	    searchResults.repaint();
 	    searchResults.revalidate();
+	}
+
+	public void updateFriend(User friend) 
+	{
+		friendsList.add(new JLabel(friend.getName()));
 	}
 }

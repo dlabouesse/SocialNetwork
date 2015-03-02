@@ -2,8 +2,6 @@ package com.cbd.social_network;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-//import javax.swing.border.EmptyBorder;
-import javax.swing.JPanel;
 
 import com.cbd.social_network.entities.User;
 import com.cbd.social_network.ui.logged_in.MyFriendsPanel;
@@ -18,9 +16,11 @@ public class WindowsManager {
 	
 	private JFrame mainFrame;
 	private JTabbedPane tabs;
+	private User loggedInUser;
 	
 	protected WindowsManager()
 	{
+		this.loggedInUser = new User();
 	}
 	
 	public static WindowsManager getInstance()
@@ -49,9 +49,14 @@ public class WindowsManager {
 	
 	public void logedInWindow(User user)
 	{
+		this.loggedInUser.setFirstName(user.getFirstName());
+		this.loggedInUser.setLastName(user.getLastName());
+		this.loggedInUser.setEmail(user.getEmail());
+		this.loggedInUser.setFriends(user.getFriends());
+		
 		tabs = new JTabbedPane();
-		tabs.add(user.getName(), new MyProfilePanel(user));
-		tabs.add("My friends", new MyFriendsPanel(user));
+		tabs.add(loggedInUser.getName(), new MyProfilePanel(loggedInUser));
+		tabs.add("My friends", new MyFriendsPanel(loggedInUser));
 		
 		mainFrame.getContentPane().add(tabs);
 	}
@@ -65,6 +70,11 @@ public class WindowsManager {
 	public JTabbedPane getOnglets()
 	{
 		return tabs;
+	}
+
+	public User getLoggedInUser() 
+	{
+		return loggedInUser;
 	}
 
 }

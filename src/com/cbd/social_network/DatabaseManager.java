@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
 
 import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
@@ -531,7 +531,7 @@ public class DatabaseManager {
 			return friends;
 		}
 
-		public ArrayList<User> searchUsers(String search) 
+		public ArrayList<User> searchUsers(User loggedInUser, String search) 
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectMatchingUsersStatement = null;
@@ -553,11 +553,24 @@ public class DatabaseManager {
 				
 				while (rs.next()) 
 				{
-					User currentResult = new User();
-					currentResult.setFirstName(rs.getString("user.first_name"));
-					currentResult.setLastName(rs.getString("user.last_name"));
-					currentResult.setEmail(rs.getString("user.email"));
-					results.add(currentResult);
+					Iterator<User> it = loggedInUser.getFriends().iterator();
+					boolean alreadyFriends = false;
+				    while(it.hasNext())
+				    {
+				    	if(it.next().getEmail().equals(rs.getString("user.email")))
+				    	{
+				    		alreadyFriends = true;
+				    		break;
+				    	}
+				    }
+				    if(!alreadyFriends)
+				    {
+						User currentResult = new User();
+						currentResult.setFirstName(rs.getString("user.first_name"));
+						currentResult.setLastName(rs.getString("user.last_name"));
+						currentResult.setEmail(rs.getString("user.email"));
+						results.add(currentResult);
+				    }
 				}	
 				
 				rs.close();
@@ -586,5 +599,51 @@ public class DatabaseManager {
 				}
 			}
 			return results;
+		}
+
+		public void addNewFriend(User user, User friend) 
+		{
+			Connection dbConnection = null;
+			PreparedStatement insertNewFriendStatement = null;
+			try
+			{
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String insertUser = "INSERT INTO friendship (user_id, friend_id) VALUES (?, ?)";
+
+				insertNewFriendStatement = dbConnection.prepareStatement(insertUser);
+				
+				insertNewFriendStatement.setLong(1, getUserId(user));
+				insertNewFriendStatement.setLong(2, getUserId(friend));
+
+				insertNewFriendStatement.executeUpdate(); 
+				
+				dbConnection.commit();
+				
+				insertNewFriendStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (insertNewFriendStatement != null)
+						insertNewFriendStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
 		}
 }
