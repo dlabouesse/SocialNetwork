@@ -1,4 +1,4 @@
-package com.cbd.social_network.ui.logged_in;
+package com.cbd.social_network.ui.logged_in.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,13 +6,15 @@ import java.awt.event.ActionListener;
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
+import com.cbd.social_network.ui.logged_in.panels.HotPostsPanel;
+import com.cbd.social_network.ui.logged_in.panels.MyFriendsPanel;
 
 public class addFriendActionListener implements ActionListener 
 {
 	private User user;
 	private User friend;
 	
-	addFriendActionListener(User user, User friend)
+	public addFriendActionListener(User user, User friend)
 	{
 		this.user = user;
 		this.friend = friend;

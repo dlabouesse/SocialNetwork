@@ -4,9 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
 import com.cbd.social_network.entities.User;
-import com.cbd.social_network.ui.logged_in.HotPostsPanel;
-import com.cbd.social_network.ui.logged_in.MyFriendsPanel;
-import com.cbd.social_network.ui.logged_in.MyProfilePanel;
+import com.cbd.social_network.ui.logged_in.panels.HotPostsPanel;
+import com.cbd.social_network.ui.logged_in.panels.MyFriendsPanel;
+import com.cbd.social_network.ui.logged_in.panels.MyProfilePanel;
 import com.cbd.social_network.ui.non_logged.LoginPanel;
 import com.cbd.social_network.ui.non_logged.RegisterPanel;
 

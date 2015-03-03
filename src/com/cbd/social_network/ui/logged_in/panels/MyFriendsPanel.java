@@ -1,4 +1,4 @@
-package com.cbd.social_network.ui.logged_in;
+package com.cbd.social_network.ui.logged_in.panels;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -14,6 +14,9 @@ import javax.swing.JTextField;
 
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
+import com.cbd.social_network.ui.logged_in.listeners.GoFriendProfileActionListener;
+import com.cbd.social_network.ui.logged_in.listeners.SearchUserActionListener;
+import com.cbd.social_network.ui.logged_in.listeners.addFriendActionListener;
 
 public class MyFriendsPanel extends JPanel{
 

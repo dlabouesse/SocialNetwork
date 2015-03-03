@@ -1,6 +1,4 @@
-package com.cbd.social_network.ui.logged_in;
-
-import java.awt.Component;
+package com.cbd.social_network.ui.logged_in.panels;
 
 import javax.swing.JPanel;
 

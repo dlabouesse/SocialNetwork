@@ -1,4 +1,4 @@
-package com.cbd.social_network.ui.logged_in;
+package com.cbd.social_network.ui.logged_in.panels;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
+import com.cbd.social_network.ui.logged_in.listeners.PostActionListener;
 
 public class MyProfilePanel extends JPanel{
 	

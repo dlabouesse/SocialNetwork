@@ -1,12 +1,11 @@
-package com.cbd.social_network.ui.logged_in;
+package com.cbd.social_network.ui.logged_in.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
+import com.cbd.social_network.ui.logged_in.panels.FriendProfilePanel;
 
 public class GoFriendProfileActionListener implements ActionListener
 {

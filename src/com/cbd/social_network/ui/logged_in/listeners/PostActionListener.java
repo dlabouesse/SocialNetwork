@@ -1,4 +1,4 @@
-package com.cbd.social_network.ui.logged_in;
+package com.cbd.social_network.ui.logged_in.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,12 +7,14 @@ import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
+import com.cbd.social_network.ui.logged_in.panels.HotPostsPanel;
+import com.cbd.social_network.ui.logged_in.panels.MyProfilePanel;
 
 public class PostActionListener implements ActionListener{
 	
 	private User user;
 	
-	PostActionListener(User user)
+	public PostActionListener(User user)
 	{
 		this.user=user;
 	}

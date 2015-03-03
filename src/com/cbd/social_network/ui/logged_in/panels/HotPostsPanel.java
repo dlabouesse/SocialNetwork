@@ -1,4 +1,4 @@
-package com.cbd.social_network.ui.logged_in;
+package com.cbd.social_network.ui.logged_in.panels;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -6,18 +6,12 @@ import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.Post;
-import com.cbd.social_network.entities.User;
 
 public class HotPostsPanel extends JPanel
 {
