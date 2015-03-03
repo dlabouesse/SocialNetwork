@@ -46,7 +46,7 @@ public class UpdateUserProfileListener implements ActionListener{
 		if(detailsChanged)
 		{
 			DatabaseManager.getInstance().updateUser(loggedInUser, newLoggedInUser);
-			parametersPanel.displayMessage(changes);
+			parametersPanel.displayDetailsUpdateMessage(changes);
 			loggedInUser.setFirstName(newLoggedInUser.getFirstName());
 			loggedInUser.setLastName(newLoggedInUser.getLastName());
 			loggedInUser.setEmail(newLoggedInUser.getEmail());
@@ -54,59 +54,8 @@ public class UpdateUserProfileListener implements ActionListener{
 		}
 		else
 		{
-			parametersPanel.displayMessage("");
+			parametersPanel.displayDetailsUpdateMessage("");
 		}
-		/*
-		//Status update from logged in user
-		if(recipient==null)
-		{
-			MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getTabs().getComponent(0);
-			
-			Post post = new Post(myProfilePanel.getPost(), ui.getLoggedInUser());
-			
-			//TODO Check validation of field
-			
-			DatabaseManager.getInstance().persistNewPost(post);
-			
-			myProfilePanel.updatePosts();
-			
-			HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
-			hotPostsPanel.updateHotPosts();
-		}
-		//New post from logged in user to recipient
-		else
-		{
-			int indexOfFriendPanel = -1;
-			for(int i=0 ; i<ui.getTabs().getTabCount() ; i++)
-			{
-				if(ui.getTabs().getTitleAt(i).equals(recipient.getName()))
-				{
-					indexOfFriendPanel = i;
-					break;
-				}
-			}
-			if (indexOfFriendPanel>-1)
-			{
-				System.out.println(indexOfFriendPanel);
-				FriendProfilePanel friendProfilePanel =(FriendProfilePanel)ui.getTabs().getComponentAt(indexOfFriendPanel);
-				Post post = new Post(friendProfilePanel.getPost(), ui.getLoggedInUser(), recipient);
-				
-				//TODO Check validation of field
-				
-				DatabaseManager.getInstance().persistNewPost(post);
-				
-				friendProfilePanel.updatePosts();
-				
-				MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getTabs().getComponent(0);
-				myProfilePanel.updatePosts();
-				
-				HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
-				hotPostsPanel.updateHotPosts();
-			}
-			else
-				System.out.println("An error occured while creating a new post to "+recipient.getName());
-		}
-		*/
 	}
 
 }

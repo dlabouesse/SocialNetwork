@@ -30,6 +30,7 @@ public class RegisterActionListener implements ActionListener
 			DatabaseManager.getInstance().persistNewUser(user);
 			
 			registerPanel.setRegisterMessage("Welcome "+firstName+" on this application!");
+			//TODO Load Logged in panel
 		}
 		else//Password doesn't match confirmation
 		{

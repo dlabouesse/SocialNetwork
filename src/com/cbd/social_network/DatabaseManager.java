@@ -745,9 +745,9 @@ public class DatabaseManager {
 				dbConnection = getDBConnection();
 				dbConnection.setAutoCommit(false);
 				
-				String insertUser = "UPDATE user SET first_name=?, last_name=?, email=? WHERE id = ?";
+				String updateUser = "UPDATE user SET first_name=?, last_name=?, email=? WHERE id = ?";
 
-				updateUserStatement = dbConnection.prepareStatement(insertUser);
+				updateUserStatement = dbConnection.prepareStatement(updateUser);
 				
 				updateUserStatement.setString(1, newLoggedInUser.getFirstName());
 				updateUserStatement.setString(2, newLoggedInUser.getLastName());
@@ -772,6 +772,107 @@ public class DatabaseManager {
 				{
 					if (updateUserStatement != null)
 						updateUserStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+		}
+		
+		public String getPassword(User user)
+		{
+			Connection dbConnection = null;
+			PreparedStatement selectPasswordStatement = null;
+			
+			String password="";
+			
+			try
+			{
+				
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String selectPassword = "SELECT password FROM user WHERE email = ? ";
+				selectPasswordStatement = dbConnection.prepareStatement(selectPassword);
+				
+				selectPasswordStatement.setString(1, user.getEmail());
+				ResultSet rs = selectPasswordStatement.executeQuery();
+				
+				
+				
+				while (rs.next()) 
+				{
+					password=rs.getString("password");
+				}	
+				
+				rs.close();
+				selectPasswordStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (selectPasswordStatement != null)
+						selectPasswordStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+			return password;
+		}
+
+		public void updatePassword(User user, String newPassword) 
+		{
+			Connection dbConnection = null;
+			PreparedStatement updatePasswordStatement = null;
+
+			try
+			{
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String updatePassword = "UPDATE user SET password=? WHERE email = ?";
+
+				updatePasswordStatement = dbConnection.prepareStatement(updatePassword);
+				
+				updatePasswordStatement.setString(1, newPassword);
+				updatePasswordStatement.setString(2, user.getEmail());
+
+				updatePasswordStatement.executeUpdate(); 
+				
+				dbConnection.commit();
+				
+				updatePasswordStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (updatePasswordStatement != null)
+						updatePasswordStatement.close();
 					
 					if (dbConnection != null)
 						dbConnection.close();
