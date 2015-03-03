@@ -555,23 +555,26 @@ public class DatabaseManager {
 				while (rs.next()) 
 				{
 					Iterator<User> it = loggedInUser.getFriends().iterator();
-					boolean alreadyFriends = false;
-				    while(it.hasNext())
-				    {
-				    	if(it.next().getEmail().equals(rs.getString("user.email")))
-				    	{
-				    		alreadyFriends = true;
-				    		break;
-				    	}
-				    }
-				    if(!alreadyFriends)
-				    {
-						User currentResult = new User();
-						currentResult.setFirstName(rs.getString("user.first_name"));
-						currentResult.setLastName(rs.getString("user.last_name"));
-						currentResult.setEmail(rs.getString("user.email"));
-						results.add(currentResult);
-				    }
+					if(!loggedInUser.getEmail().equals(rs.getString("user.email")))
+					{
+						boolean alreadyFriends = false;
+					    while(it.hasNext())
+					    {
+					    	if(it.next().getEmail().equals(rs.getString("user.email")))
+					    	{
+					    		alreadyFriends = true;
+					    		break;
+					    	}
+					    }
+					    if(!alreadyFriends)
+					    {
+							User currentResult = new User();
+							currentResult.setFirstName(rs.getString("user.first_name"));
+							currentResult.setLastName(rs.getString("user.last_name"));
+							currentResult.setEmail(rs.getString("user.email"));
+							results.add(currentResult);
+					    }
+					}
 				}	
 				
 				rs.close();

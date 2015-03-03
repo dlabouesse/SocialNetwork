@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.cbd.social_network.DatabaseManager;
+import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
 import com.cbd.social_network.ui.logged_in.listeners.PostActionListener;
@@ -37,7 +38,7 @@ public class MyProfilePanel extends JPanel{
 		JScrollPane scrollPostField = new JScrollPane(postField);
 		
 		JButton postButton = new JButton("Post");
-		postButton.addActionListener(new PostActionListener(user));
+		postButton.addActionListener(new PostActionListener());
 		
 		userDetails.add(newPostLabel);
 		userDetails.add(scrollPostField);
@@ -68,7 +69,7 @@ public class MyProfilePanel extends JPanel{
 	    	if(currentPost.getAuthor().getName().equals(user.getName()) && currentPost.getRecipient().getName().equals(user.getName()))
 	    		postTitle="Status update";
 	    	else if(currentPost.getRecipient().getName().equals(user.getName()))
-	    		postTitle="From "+currentPost.getRecipient().getName();
+	    		postTitle="From "+currentPost.getAuthor().getName();
 	    	else
 	    		postTitle="To "+currentPost.getRecipient().getName();
 	    	
@@ -78,9 +79,10 @@ public class MyProfilePanel extends JPanel{
 	    }
 		
 	}
-	//TODO Directly send the post in parameter (user in private attribute)
-	public void updatePosts(User user)
+
+	public void updatePosts()
 	{
+		User user = WindowsManager.getInstance().getLoggedInUser();
 		Post post = DatabaseManager.getInstance().retrieveLastPost(user);
 		
     	JTextArea postContent = new JTextArea(post.getContent());
@@ -91,7 +93,7 @@ public class MyProfilePanel extends JPanel{
     	if(post.getAuthor().getName().equals(user.getName()) && post.getRecipient().getName().equals(user.getName()))
     		postTitle="Status update";
     	else if(post.getRecipient().getName().equals(user.getName()))
-    		postTitle="From "+post.getRecipient().getName();
+    		postTitle="From "+post.getAuthor().getName();
     	else
     		postTitle="To "+post.getRecipient().getName();
     	
