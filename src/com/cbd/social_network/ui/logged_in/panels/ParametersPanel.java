@@ -1,6 +1,8 @@
 package com.cbd.social_network.ui.logged_in.panels;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -66,6 +68,17 @@ public class ParametersPanel extends JPanel{
 		b4.add(userDetailsUpdateLabel);
 		
 		this.add(b4, BorderLayout.NORTH);
+		
+		JButton logoutButton = new JButton("Logout");
+		logoutButton.addActionListener(new ActionListener(){
+	      public void actionPerformed(ActionEvent e){
+	    	  WindowsManager.getInstance().clear();
+	    	  WindowsManager.getInstance().loginWindow();
+	        }
+	      });
+		
+		this.add(logoutButton, BorderLayout.SOUTH);
+		
 	}
 
 	public String getFirstName() 

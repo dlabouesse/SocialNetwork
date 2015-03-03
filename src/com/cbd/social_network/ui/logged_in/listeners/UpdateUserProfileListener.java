@@ -5,11 +5,7 @@ import java.awt.event.ActionListener;
 
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
-import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
-import com.cbd.social_network.ui.logged_in.panels.FriendProfilePanel;
-import com.cbd.social_network.ui.logged_in.panels.HotPostsPanel;
-import com.cbd.social_network.ui.logged_in.panels.MyProfilePanel;
 import com.cbd.social_network.ui.logged_in.panels.ParametersPanel;
 
 public class UpdateUserProfileListener implements ActionListener{
@@ -20,8 +16,6 @@ public class UpdateUserProfileListener implements ActionListener{
 		ParametersPanel parametersPanel = (ParametersPanel)ui.getTabs().getComponentAt(ui.getTabs().getTabCount()-1);
 		
 		User loggedInUser = ui.getLoggedInUser();
-		
-		System.out.println(parametersPanel.getFirstName());
 		
 		String changes ="";
 		boolean detailsChanged =false;
