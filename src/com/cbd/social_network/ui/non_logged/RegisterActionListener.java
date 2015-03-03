@@ -13,7 +13,7 @@ public class RegisterActionListener implements ActionListener
 	{
 		WindowsManager ui = WindowsManager.getInstance();
 		
-		RegisterPanel registerPanel =(RegisterPanel)ui.getOnglets().getComponent(1);
+		RegisterPanel registerPanel =(RegisterPanel)ui.getTabs().getComponent(1);
 	
 		//Check password and confirmation
 		if (registerPanel.checkPasswordConfirmation())

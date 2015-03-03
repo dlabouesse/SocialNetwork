@@ -34,10 +34,16 @@ public class MyFriendsPanel extends JPanel{
 		
 	    while(it.hasNext())
 	    {
+	    	Box b = Box.createHorizontalBox();
 	    	User currentFriend=it.next();
 	    	JLabel friendName = new JLabel(currentFriend.getName());
 	    	
-	    	friendsList.add(friendName);
+	    	JButton goFriendProfile = new JButton("Go to the profile");
+	    	goFriendProfile.addActionListener(new GoFriendProfileActionListener(currentFriend));
+	    	
+	    	b.add(friendName);
+	    	b.add(goFriendProfile);
+	    	friendsList.add(b);
 	    }
 		
 		JPanel searchUser = new JPanel();
@@ -107,6 +113,14 @@ public class MyFriendsPanel extends JPanel{
 
 	public void updateFriend(User friend) 
 	{
-		friendsList.add(new JLabel(friend.getName()));
+		
+		Box b = Box.createHorizontalBox();
+    	
+    	JButton goFriendProfile = new JButton("Go to the profile");
+    	goFriendProfile.addActionListener(new GoFriendProfileActionListener(friend));
+    	
+    	b.add(new JLabel(friend.getName()));
+    	b.add(goFriendProfile);
+    	friendsList.add(b);
 	}
 }

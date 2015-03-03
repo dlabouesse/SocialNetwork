@@ -18,7 +18,7 @@ public class SearchUserActionListener implements ActionListener{
 	{
 		WindowsManager ui = WindowsManager.getInstance();
 		
-		MyFriendsPanel myFriendsPanel =(MyFriendsPanel)ui.getOnglets().getComponent(1);
+		MyFriendsPanel myFriendsPanel =(MyFriendsPanel)ui.getTabs().getComponent(1);
 		//TODO use config file for min length
 		if(myFriendsPanel.getSearchString().length() > 0)
 		{

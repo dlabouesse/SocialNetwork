@@ -23,13 +23,14 @@ public class addFriendActionListener implements ActionListener
 		DatabaseManager.getInstance().addNewFriend(user, friend);
 		
 		WindowsManager ui = WindowsManager.getInstance();
-		MyFriendsPanel myFriendsPanel =(MyFriendsPanel)ui.getOnglets().getComponent(1);
+		MyFriendsPanel myFriendsPanel =(MyFriendsPanel)ui.getTabs().getComponent(1);
 		
-		myFriendsPanel.displayError(friend.getName()+" is now your friend!");
 		myFriendsPanel.updateFriend(friend);
+		myFriendsPanel.displayError(friend.getName()+" is now your friend!");
+		
 		ui.getLoggedInUser().addFriend(friend);
 
-		HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getOnglets().getComponent(2);
+		HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
 		hotPostsPanel.updateHotPosts();
 	}
 

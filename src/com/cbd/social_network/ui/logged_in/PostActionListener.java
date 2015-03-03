@@ -21,7 +21,7 @@ public class PostActionListener implements ActionListener{
 	{
 		WindowsManager ui = WindowsManager.getInstance();
 		
-		MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getOnglets().getComponent(0);
+		MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getTabs().getComponent(0);
 		
 		Post post = new Post(myProfilePanel.getPost(), this.user);
 		
@@ -31,7 +31,7 @@ public class PostActionListener implements ActionListener{
 		
 		myProfilePanel.updatePosts(this.user);
 		
-		HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getOnglets().getComponent(2);
+		HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
 		hotPostsPanel.updateHotPosts();
 	}
 

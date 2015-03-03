@@ -13,7 +13,7 @@ public class LoginActionListener implements ActionListener
 	{
 		WindowsManager ui = WindowsManager.getInstance();
 		
-		LoginPanel loginPanel =(LoginPanel)ui.getOnglets().getComponent(0);
+		LoginPanel loginPanel =(LoginPanel)ui.getTabs().getComponent(0);
 		User user = DatabaseManager.getInstance().getUser(loginPanel.getLoginEmail(), loginPanel.getLoginPassword());
 		if(user.getFirstName()!=null)//Login successful
 		{

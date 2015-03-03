@@ -69,7 +69,7 @@ public class WindowsManager {
 		mainFrame.repaint();
 	}
 	
-	public JTabbedPane getOnglets()
+	public JTabbedPane getTabs()
 	{
 		return tabs;
 	}
