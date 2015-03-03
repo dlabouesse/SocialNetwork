@@ -34,8 +34,10 @@ public class GoFriendProfileActionListener implements ActionListener
 			ui.getTabs().setSelectedIndex(indexOfExistingPanel);
 		else
 		{
-			ui.getTabs().add(friend.getName(), new FriendProfilePanel(friend));
-			ui.getTabs().setSelectedIndex(ui.getTabs().getTabCount()-1);
+			ui.getTabs().add(new FriendProfilePanel(friend), ui.getTabs().getTabCount()-1);
+			ui.getTabs().setTitleAt(ui.getTabs().getTabCount()-2, friend.getName());
+			ui.getTabs().setSelectedIndex(ui.getTabs().getTabCount()-2);
+			
 		}
 	}
 

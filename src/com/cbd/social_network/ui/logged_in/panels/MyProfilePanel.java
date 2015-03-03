@@ -20,29 +20,29 @@ import com.cbd.social_network.ui.logged_in.listeners.PostActionListener;
 
 public class MyProfilePanel extends JPanel{
 	
-	private JTextArea postField;
+	private JTextArea newPostField;
 	private Box lastPosts;
 	
 	public MyProfilePanel(User user)
 	{
 		this.setLayout(new BorderLayout());
 
-		Box userDetails = Box.createVerticalBox();
-		this.add(userDetails, BorderLayout.NORTH);
+		Box newPostBox = Box.createVerticalBox();
+		this.add(newPostBox, BorderLayout.NORTH);
 
 		JLabel newPostLabel = new JLabel("New post:");
 
-		postField = new JTextArea();
-		postField.setRows(6);
+		newPostField = new JTextArea();
+		newPostField.setRows(6);
 		
-		JScrollPane scrollPostField = new JScrollPane(postField);
+		JScrollPane scrollPostField = new JScrollPane(newPostField);
 		
 		JButton postButton = new JButton("Post");
 		postButton.addActionListener(new PostActionListener());
 		
-		userDetails.add(newPostLabel);
-		userDetails.add(scrollPostField);
-		userDetails.add(postButton);
+		newPostBox.add(newPostLabel);
+		newPostBox.add(scrollPostField);
+		newPostBox.add(postButton);
 		
 		
 		lastPosts = Box.createVerticalBox();
@@ -51,8 +51,8 @@ public class MyProfilePanel extends JPanel{
 		
 
 		scrollPosts.setBorder(BorderFactory.createTitledBorder("Last Posts"));
-		scrollPosts.setBackground(userDetails.getBackground());
-		lastPosts.setBackground(userDetails.getBackground());
+		scrollPosts.setBackground(this.getBackground());
+		lastPosts.setBackground(this.getBackground());
 		
 		ArrayList<Post> posts = DatabaseManager.getInstance().retrievePosts(user);
 		
@@ -62,7 +62,7 @@ public class MyProfilePanel extends JPanel{
 	    {
 	    	Post currentPost=it.next();
 	    	JTextArea postContent = new JTextArea(currentPost.getContent());
-	    	postContent.setBackground(userDetails.getBackground());
+	    	postContent.setBackground(this.getBackground());
 	    	postContent.setEditable(false);
 	    	
 	    	String postTitle;
@@ -101,11 +101,11 @@ public class MyProfilePanel extends JPanel{
     	
     	lastPosts.add(postContent, 0);
     	lastPosts.revalidate();
-    	postField.setText("");
+    	newPostField.setText("");
 	}
 
 	public String getPost() 
 	{
-		return postField.getText();
+		return newPostField.getText();
 	}
 }

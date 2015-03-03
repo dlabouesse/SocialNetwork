@@ -7,6 +7,7 @@ import com.cbd.social_network.entities.User;
 import com.cbd.social_network.ui.logged_in.panels.HotPostsPanel;
 import com.cbd.social_network.ui.logged_in.panels.MyFriendsPanel;
 import com.cbd.social_network.ui.logged_in.panels.MyProfilePanel;
+import com.cbd.social_network.ui.logged_in.panels.ParametersPanel;
 import com.cbd.social_network.ui.non_logged.LoginPanel;
 import com.cbd.social_network.ui.non_logged.RegisterPanel;
 
@@ -59,6 +60,7 @@ public class WindowsManager {
 		tabs.add(loggedInUser.getName(), new MyProfilePanel(loggedInUser));
 		tabs.add("My friends", new MyFriendsPanel(loggedInUser));
 		tabs.add("Hot Posts", new HotPostsPanel());
+		tabs.add("Parameters", new ParametersPanel());
 		
 		mainFrame.getContentPane().add(tabs);
 	}
