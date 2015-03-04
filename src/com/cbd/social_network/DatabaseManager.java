@@ -1026,4 +1026,60 @@ public class DatabaseManager {
 				}
 			}
 		}
+
+		public boolean existEmail(String email) 
+		{
+			Connection dbConnection = null;
+			PreparedStatement selectCountEmailStatement = null;
+			
+			boolean emailAlreadyExist = false;
+			
+			try
+			{
+				
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String selectCountEmail = "SELECT COUNT(*) AS nb FROM user WHERE email = ? ";
+				selectCountEmailStatement = dbConnection.prepareStatement(selectCountEmail);
+				
+				selectCountEmailStatement.setString(1, email);
+				ResultSet rs = selectCountEmailStatement.executeQuery();
+				
+				while (rs.next()) 
+				{
+					System.out.println(rs.getInt("nb"));
+					if(rs.getInt("nb")>0)
+						emailAlreadyExist = true;
+				}
+				
+				
+				rs.close();
+				selectCountEmailStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (selectCountEmailStatement != null)
+						selectCountEmailStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+			
+			return emailAlreadyExist;
+		}
 }

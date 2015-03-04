@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 
-import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
 import com.cbd.social_network.ui.logged_in.panels.ParametersPanel;
@@ -18,17 +17,15 @@ public class UpdateUserProfileListener implements ActionListener{
 		
 		User loggedInUser = ui.getLoggedInUser();
 		
-		//String changes ="";
 		boolean detailsChanged =false;
 		
 		if(!parametersPanel.getFirstName().equals(loggedInUser.getFirstName()))
 		{
 			detailsChanged = true;
-			//changes+=" First name updated!";
 			try {
 				loggedInUser.setFirstName(parametersPanel.getFirstName());
 			} catch (PropertyVetoException e1) {
-				parametersPanel.displayDetailsUpdateMessage("Error: first name must be longer!");
+				parametersPanel.displayDetailsUpdateMessage("Error: First name must be longer!");
 				parametersPanel.setFirstName(loggedInUser.getFirstName());
 				e1.printStackTrace();
 			}
@@ -36,7 +33,6 @@ public class UpdateUserProfileListener implements ActionListener{
 		if(!parametersPanel.getLastName().equals(loggedInUser.getLastName()))
 		{
 			detailsChanged = true;
-			//changes+=" Last name updated!";
 			try {
 				loggedInUser.setLastName(parametersPanel.getLastName());
 			} catch (PropertyVetoException e1) {
@@ -48,8 +44,6 @@ public class UpdateUserProfileListener implements ActionListener{
 		if(!parametersPanel.getEmail().equals(loggedInUser.getEmail()))
 		{
 			detailsChanged = true;
-			//changes+=" Email updated!";
-			//TODO Validates
 			try {
 				loggedInUser.setEmail(parametersPanel.getEmail());
 			} catch (PropertyVetoException e1) {

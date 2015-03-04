@@ -3,9 +3,9 @@ package com.cbd.social_network.ui.non_logged;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.util.regex.Pattern;
 
 import com.cbd.social_network.DatabaseManager;
-import com.cbd.social_network.UserPropertyChangeListener;
 import com.cbd.social_network.UserVetoableChangeListener;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
@@ -44,20 +44,37 @@ public class RegisterActionListener implements ActionListener
 				errors+=" Email address is not valid!";
 				e1.printStackTrace();
 			}
-			user.setPassword(registerPanel.getRegisterPassword());
 			
-			//TODO add validation to the fields (regex)
-			//TODO check uniqueness of the email!
+			Pattern pattern = Pattern.compile("((?=(.*\\d){4})(?=.*[A-Z])(?=(.*[a-z]){2})).{7,}");
+			if(pattern.matcher(registerPanel.getRegisterPassword()).matches())
+				user.setPassword(registerPanel.getRegisterPassword());
+			else
+				errors+=" Password is not valid! (It must contain 4 digits, 2 lower case, 1 upper case.)";
+			
 			if (errors == "")
 			{
-				DatabaseManager.getInstance().persistNewUser(user);			
-				registerPanel.setRegisterMessage("Welcome "+user.getName()+" on this application!");
+				//Check the uniqueness of the email address
+				if(!DatabaseManager.getInstance().existEmail(user.getEmail()))
+				{
+					DatabaseManager.getInstance().persistNewUser(user);			
+					registerPanel.setRegisterMessage("Welcome "+user.getName()+" on this application!");
+					//Automatic log in
+					ui.clear();
+					try {
+						ui.logedInWindow(user);
+					} catch (PropertyVetoException e1) {
+						e1.printStackTrace();
+					}
+				}
+				else
+				{
+					registerPanel.setRegisterMessage("This email address is already used!");
+				}
 			}
 			else
 			{
 				registerPanel.setRegisterMessage(errors);
 			}
-			//TODO Load Logged in panel
 		}
 		else//Password doesn't match confirmation
 		{

@@ -9,13 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
-import com.cbd.social_network.ui.logged_in.listeners.PostActionListener;
 import com.cbd.social_network.ui.logged_in.listeners.UpdatePasswordListener;
 import com.cbd.social_network.ui.logged_in.listeners.UpdateUserProfileListener;
 

@@ -28,7 +28,6 @@ public class SearchUserActionListener implements ActionListener{
 			try {
 				results = DatabaseManager.getInstance().searchUsers(ui.getLoggedInUser(), myFriendsPanel.getSearchString());
 			} catch (PropertyVetoException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			if (results.size()==0)

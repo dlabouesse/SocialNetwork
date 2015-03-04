@@ -44,7 +44,6 @@ public class PostActionListener implements ActionListener{
 			try {
 				myProfilePanel.updatePosts();
 			} catch (PropertyVetoException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
@@ -52,7 +51,6 @@ public class PostActionListener implements ActionListener{
 			try {
 				hotPostsPanel.updateHotPosts();
 			} catch (PropertyVetoException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -80,7 +78,6 @@ public class PostActionListener implements ActionListener{
 				try {
 					friendProfilePanel.updatePosts();
 				} catch (PropertyVetoException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -88,7 +85,6 @@ public class PostActionListener implements ActionListener{
 				try {
 					myProfilePanel.updatePosts();
 				} catch (PropertyVetoException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -96,7 +92,6 @@ public class PostActionListener implements ActionListener{
 				try {
 					hotPostsPanel.updateHotPosts();
 				} catch (PropertyVetoException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

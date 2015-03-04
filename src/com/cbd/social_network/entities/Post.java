@@ -1,7 +1,9 @@
 package com.cbd.social_network.entities;
 
+import java.io.Serializable;
 
-public class Post {
+
+public class Post implements Serializable{
 	private String content;
 	private User author;
 	private User recipient;

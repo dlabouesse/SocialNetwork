@@ -38,7 +38,6 @@ public class GoFriendProfileActionListener implements ActionListener
 			try {
 				ui.getTabs().add(new FriendProfilePanel(friend), ui.getTabs().getTabCount()-1);
 			} catch (PropertyVetoException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			ui.getTabs().setTitleAt(ui.getTabs().getTabCount()-2, friend.getName());

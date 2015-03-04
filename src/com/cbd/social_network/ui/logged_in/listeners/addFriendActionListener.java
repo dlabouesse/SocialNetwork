@@ -37,7 +37,6 @@ public class addFriendActionListener implements ActionListener
 		try {
 			hotPostsPanel.updateHotPosts();
 		} catch (PropertyVetoException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}

@@ -9,7 +9,7 @@ public class UserVetoableChangeListener implements VetoableChangeListener {
 
 	public void vetoableChange(PropertyChangeEvent evt) throws PropertyVetoException 
 	{
-		if( evt.getPropertyName()=="First name")
+		if (evt.getPropertyName()=="First name")
 		{
 			Pattern pattern = Pattern.compile("[a-zA-Z]{2,}");
 			String newFirstName = (String) evt.getNewValue();
@@ -18,7 +18,7 @@ public class UserVetoableChangeListener implements VetoableChangeListener {
 				throw new PropertyVetoException("First name", evt);
 			}
 		}
-		else if( evt.getPropertyName()=="Last name")
+		else if (evt.getPropertyName()=="Last name")
 		{
 			Pattern pattern = Pattern.compile("[a-zA-Z]{2,}");
 			String newLastName = (String) evt.getNewValue();
@@ -27,7 +27,7 @@ public class UserVetoableChangeListener implements VetoableChangeListener {
 				throw new PropertyVetoException("Last name", evt);
 			}
 		}
-		else if( evt.getPropertyName()=="Email")
+		else if (evt.getPropertyName()=="Email")
 		{
 			Pattern pattern = Pattern.compile("[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})");
 			String email = (String) evt.getNewValue();
@@ -36,6 +36,10 @@ public class UserVetoableChangeListener implements VetoableChangeListener {
 				throw new PropertyVetoException("Email", evt);
 			}
 		}
+	
+			// the password will have at least 4 digit, 1 upper case letters, and 2 lower case, 
+			// and more than 6 characters
+			//
 	}
 
 }

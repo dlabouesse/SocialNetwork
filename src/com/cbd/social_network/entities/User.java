@@ -134,11 +134,4 @@ public class User implements Serializable{
 	{
 		vcs.removeVetoableChangeListener(listener);
 	}
-	//TODO remove method
-	public void displayFriends()
-	{
-		Iterator<User> it = friends.iterator();
-	    while(it.hasNext())
-	      System.out.println(it.next().getName());
-	}
 }

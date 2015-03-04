@@ -19,7 +19,6 @@ public class LoginActionListener implements ActionListener
 		try {
 			user = DatabaseManager.getInstance().getUser(loginPanel.getLoginEmail(), loginPanel.getLoginPassword());
 		} catch (PropertyVetoException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		if(user.getFirstName()!=null)//Login successful
@@ -29,7 +28,6 @@ public class LoginActionListener implements ActionListener
 			try {
 				ui.logedInWindow(user);
 			} catch (PropertyVetoException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
