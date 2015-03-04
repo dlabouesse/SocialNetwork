@@ -18,20 +18,6 @@ public class ImportXMLProfileListener implements ActionListener {
 	{
 		File inputFile = new File("MyProfile.xml");
 		User loaddedUser = ProfileJAXBParser.getInstance().unmarshalProfile(inputFile);
-		
-		System.out.println(loaddedUser.getName());
-		System.out.println(loaddedUser.getEmail());
-		System.out.println(loaddedUser.getFriends());
-		
-		ArrayList<User> friends = loaddedUser.getFriends();
-		
-		Iterator<User> it = friends.iterator();
-		
-	    while(it.hasNext())
-	    {
-	    	User currentFriend=it.next();
-	    	System.out.println(currentFriend.getName());
-	    }
 	    
 	    WindowsManager ui = WindowsManager.getInstance();
 		

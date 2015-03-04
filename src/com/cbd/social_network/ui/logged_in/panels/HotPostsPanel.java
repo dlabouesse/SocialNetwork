@@ -2,8 +2,12 @@ package com.cbd.social_network.ui.logged_in.panels;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyVetoException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -12,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.cbd.social_network.DatabaseManager;
+import com.cbd.social_network.PropertiesFileManager;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.Post;
 
@@ -26,9 +31,10 @@ public class HotPostsPanel extends JPanel
 		JScrollPane scrollPosts = new JScrollPane(hotPosts);
 		this.add(scrollPosts, BorderLayout.CENTER);
 		
-		//scrollPosts.setBorder(BorderFactory.createTitledBorder("Last Posts"));
-		//scrollPosts.setBackground(userDetails.getBackground());
-		//lastPosts.setBackground(userDetails.getBackground());
+		String hotPostsColor = PropertiesFileManager.getInstance().getProperty("hotPostsColor");
+		String myPostsColor = PropertiesFileManager.getInstance().getProperty("myPostsColor");
+		
+		System.out.println(hotPostsColor);
 		
 		ArrayList<Post> posts = DatabaseManager.getInstance().retrieveHotPosts(WindowsManager.getInstance().getLoggedInUser());
 		
@@ -38,16 +44,22 @@ public class HotPostsPanel extends JPanel
 	    {
 	    	Post currentPost=it.next();
 	    	JTextArea postContent = new JTextArea(currentPost.getContent());
-	    	//postContent.setBackground(userDetails.getBackground());
+	    	postContent.setBackground(WindowsManager.getInstance().getColor(hotPostsColor));
 	    	postContent.setEditable(false);
 	    	
 	    	String postTitle;
 	    	if(currentPost.getAuthor().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()) && currentPost.getRecipient().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
+	    	{
+	    		postContent.setBackground(WindowsManager.getInstance().getColor(myPostsColor));
 	    		postTitle="Status update";
+	    	}
 	    	else if(currentPost.getRecipient().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
 	    		postTitle="From "+currentPost.getAuthor().getName();
 	    	else if(currentPost.getAuthor().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
+	    	{
+	    		postContent.setBackground(WindowsManager.getInstance().getColor(myPostsColor));
 	    		postTitle="To "+currentPost.getRecipient().getName();
+	    	}
 	    	else if(currentPost.getAuthor().getName().equals(currentPost.getRecipient().getName()))
 	    		postTitle=currentPost.getAuthor().getName();
 	    	else
@@ -63,6 +75,9 @@ public class HotPostsPanel extends JPanel
 	{
 		hotPosts.removeAll();
 		
+		String hotPostsColor = PropertiesFileManager.getInstance().getProperty("hotPostsColor");
+		String myPostsColor = PropertiesFileManager.getInstance().getProperty("myPostsColor");
+		
 		ArrayList<Post> posts = DatabaseManager.getInstance().retrieveHotPosts(WindowsManager.getInstance().getLoggedInUser());
 		
 		Iterator<Post> it = posts.iterator();
@@ -71,16 +86,23 @@ public class HotPostsPanel extends JPanel
 	    {
 	    	Post currentPost=it.next();
 	    	JTextArea postContent = new JTextArea(currentPost.getContent());
-	    	//postContent.setBackground(userDetails.getBackground());
+	    	postContent.setBackground(WindowsManager.getInstance().getColor(hotPostsColor));
 	    	postContent.setEditable(false);
 	    	
 	    	String postTitle;
 	    	if(currentPost.getAuthor().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()) && currentPost.getRecipient().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
+	    	{
+	    		postContent.setBackground(WindowsManager.getInstance().getColor(myPostsColor));
 	    		postTitle="Status update";
+	    	}
 	    	else if(currentPost.getRecipient().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
 	    		postTitle="From "+currentPost.getAuthor().getName();
 	    	else if(currentPost.getAuthor().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
+	    	{
+	    		postContent.setBackground(WindowsManager.getInstance().getColor(myPostsColor));
 	    		postTitle="To "+currentPost.getRecipient().getName();
+	    	}
+	    		
 	    	else if(currentPost.getAuthor().getName().equals(currentPost.getRecipient().getName()))
 	    		postTitle=currentPost.getAuthor().getName();
 	    	else

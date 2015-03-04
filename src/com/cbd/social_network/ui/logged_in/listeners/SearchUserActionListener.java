@@ -3,7 +3,11 @@ package com.cbd.social_network.ui.logged_in.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
@@ -21,8 +25,27 @@ public class SearchUserActionListener implements ActionListener{
 		WindowsManager ui = WindowsManager.getInstance();
 		
 		MyFriendsPanel myFriendsPanel =(MyFriendsPanel)ui.getTabs().getComponent(1);
-		//TODO use config file for min length
-		if(myFriendsPanel.getSearchString().length() > 0)
+		
+		int searchMinLength = 0;
+
+		// Read values from properties configuration
+		try {
+
+			// load a properties file
+			InputStream input = new FileInputStream("config.properties");
+			Properties prop = new Properties();
+			prop.load(input);
+
+			// get the property value and print it out
+			searchMinLength = Integer.parseInt(prop.getProperty("searchMinLength"));
+
+			input.close();
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+
+		if(myFriendsPanel.getSearchString().length() >= searchMinLength)
 		{
 			ArrayList<User> results = null;
 			try {
@@ -37,7 +60,7 @@ public class SearchUserActionListener implements ActionListener{
 		}
 		else
 		{
-			myFriendsPanel.displayError("You must enter at least 3 characters!");
+			myFriendsPanel.displayError("You must enter at least "+searchMinLength+" characters!");
 		}
 	}
 }

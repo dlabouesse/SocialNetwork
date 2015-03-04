@@ -3,6 +3,10 @@ package com.cbd.social_network.ui.logged_in.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import com.cbd.social_network.DatabaseManager;
@@ -31,6 +35,24 @@ public class PostActionListener implements ActionListener{
 	{
 		WindowsManager ui = WindowsManager.getInstance();
 		
+		String postMinLength = "2";
+		String postMaxLength = "180";
+
+		try {
+
+			InputStream input = new FileInputStream("config.properties");
+			Properties prop = new Properties();
+			prop.load(input);
+
+			postMinLength = prop.getProperty("postMinLength");
+			postMaxLength = prop.getProperty("posMaxLength");
+
+			input.close();
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
 		//Status update from logged in user
 		if(recipient==null)
 		{
@@ -58,7 +80,7 @@ public class PostActionListener implements ActionListener{
 			}
 			else
 			{
-				myProfilePanel.setPostContentErrorLabel("The post must be between 2 and 180 characters!");
+				myProfilePanel.setPostContentErrorLabel("The post must be between "+postMinLength+" and "+postMaxLength+" characters!");
 			}
 		}
 		//New post from logged in user to recipient
@@ -106,7 +128,7 @@ public class PostActionListener implements ActionListener{
 				}
 				else
 				{
-					friendProfilePanel.setPostContentErrorLabel("The post must be between 2 and 180 characters!");
+					friendProfilePanel.setPostContentErrorLabel("The post must be between "+postMinLength+" and "+postMaxLength+" characters!");
 				}
 				
 			}
@@ -117,7 +139,25 @@ public class PostActionListener implements ActionListener{
 	
 	private boolean isPostContentValid(String content)
 	{
-		Pattern pattern = Pattern.compile(".{2,180}", Pattern.DOTALL);
+		String postMinLength = "2";
+		String postMaxLength = "180";
+
+		try {
+
+			InputStream input = new FileInputStream("config.properties");
+			Properties prop = new Properties();
+			prop.load(input);
+
+			postMinLength = prop.getProperty("postMinLength");
+			postMaxLength = prop.getProperty("posMaxLength");
+
+			input.close();
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		Pattern pattern = Pattern.compile(".{"+postMinLength+","+postMaxLength+"}", Pattern.DOTALL);
 		if (pattern.matcher(content).matches())
 			return true;
 		else

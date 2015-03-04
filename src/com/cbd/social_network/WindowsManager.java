@@ -1,5 +1,6 @@
 package com.cbd.social_network;
 
+import java.awt.Color;
 import java.beans.PropertyVetoException;
 
 import javax.swing.JFrame;
@@ -87,6 +88,33 @@ public class WindowsManager {
 	public User getLoggedInUser() 
 	{
 		return loggedInUser;
+	}
+	
+	public Color getColor (String colorString)
+	{
+		Color color=null;
+		switch (colorString)
+		{
+			case "cyan": 
+				color= new Color(149,231,254);
+				break;
+			case "red":
+				color= new Color(255, 77, 58);
+				break;
+			case "green":
+				color= new Color(127, 255, 100);
+				break;
+			case "orange":
+				color= new Color(255, 135, 42);
+				break;
+			case "white":
+				color=Color.white;
+				break;
+			default:
+				break;
+		}
+		
+		return color;
 	}
 
 }
