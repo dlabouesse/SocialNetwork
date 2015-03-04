@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
+import com.cbd.social_network.ui.logged_in.listeners.ExportXMLProfileListener;
 import com.cbd.social_network.ui.logged_in.listeners.UpdatePasswordListener;
 import com.cbd.social_network.ui.logged_in.listeners.UpdateUserProfileListener;
 
@@ -107,10 +108,21 @@ public class ParametersPanel extends JPanel{
 		
 		this.add(b9, BorderLayout.NORTH);
 		
+		//EXPORT SECTION
+		JButton exportXMLFriendsList = new JButton("Export my friends (XML)");
+		exportXMLFriendsList.addActionListener(new ExportXMLProfileListener(loggedInUser));
+		
+		Box b10 = Box.createVerticalBox();
+		b10.add(exportXMLFriendsList);
+		
+		this.add(b10, BorderLayout.CENTER);
+		
 		//LOGOUT SECTION
 		JButton logoutButton = new JButton("Logout");
 		logoutButton.addActionListener(new ActionListener(){
 	      public void actionPerformed(ActionEvent e){
+	    	  WindowsManager.getInstance().getLoggedInUser().removePropertyChangeListener(WindowsManager.getInstance().getLoggedInUser().getPcs().getPropertyChangeListeners()[0]);
+	    	  WindowsManager.getInstance().getLoggedInUser().removeVetoableChangeListener(WindowsManager.getInstance().getLoggedInUser().getVcs().getVetoableChangeListeners()[0]);
 	    	  WindowsManager.getInstance().clear();
 	    	  WindowsManager.getInstance().loginWindow();
 	        }

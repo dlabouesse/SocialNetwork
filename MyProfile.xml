@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<user>
+    <firstName>Mia</firstName>
+    <lastName>Wallace</lastName>
+    <email>mia.wallace@email.ie</email>
+    <friends>
+        <friend>
+            <firstName>William</firstName>
+            <lastName>Somerset</lastName>
+            <email>william.somerset@email.ie</email>
+            <friends/>
+        </friend>
+    </friends>
+</user>

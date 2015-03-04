@@ -57,8 +57,10 @@ public class WindowsManager {
 		this.loggedInUser.setLastName(user.getLastName());
 		this.loggedInUser.setEmail(user.getEmail());
 		this.loggedInUser.setFriends(user.getFriends());
-		this.loggedInUser.addPropertyChangeListener(new UserPropertyChangeListener());
-		this.loggedInUser.addVetoableChangeListener(new UserVetoableChangeListener());
+		UserPropertyChangeListener userPropertyChangeListener = new UserPropertyChangeListener();
+		this.loggedInUser.addPropertyChangeListener(userPropertyChangeListener);
+		UserVetoableChangeListener userVetoableChangeListener = new UserVetoableChangeListener();
+		this.loggedInUser.addVetoableChangeListener(userVetoableChangeListener);
 		
 		tabs = new JTabbedPane();
 		tabs.add(loggedInUser.getName(), new MyProfilePanel(loggedInUser));
@@ -67,6 +69,8 @@ public class WindowsManager {
 		tabs.add("Parameters", new ParametersPanel());
 		
 		mainFrame.getContentPane().add(tabs);
+		mainFrame.revalidate();
+		System.out.println("Debug");
 	}
 	
 	public void clear()

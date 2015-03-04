@@ -9,6 +9,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement
+@XmlType(propOrder = {"firstName", "lastName", "email", "friends"})
 public class User implements Serializable{
 	private String firstName;
 	private String lastName;
@@ -43,6 +51,7 @@ public class User implements Serializable{
 	{
 		return this.firstName;
 	}
+	@XmlElement
 	public void setFirstName(String firstName) throws PropertyVetoException
 	{
 		this.vcs.fireVetoableChange("First name", null, firstName);
@@ -54,6 +63,7 @@ public class User implements Serializable{
 	{
 		return this.lastName;
 	}
+	@XmlElement
 	public void setLastName(String lastName) throws PropertyVetoException
 	{
 		this.vcs.fireVetoableChange("Last name", null, lastName);
@@ -65,7 +75,7 @@ public class User implements Serializable{
 	{
 		return this.getFirstName() + " " + this.getLastName();
 	}
-	
+	@XmlElement
 	public String getEmail()
 	{
 		return this.email;
@@ -82,6 +92,7 @@ public class User implements Serializable{
 	{
 		return this.password;
 	}
+	@XmlTransient
 	public void setPassword(String password)
 	{
 		this.password=password;
@@ -104,7 +115,8 @@ public class User implements Serializable{
 	{
 		this.friends.remove(user);
 	}
-	
+	@XmlElementWrapper(name = "friends")
+	@XmlElement(name = "friend")
 	public void setFriends(ArrayList<User> friends)
 	{
 		this.friends=friends;
@@ -125,6 +137,11 @@ public class User implements Serializable{
 		pcs.removePropertyChangeListener(listener);
 	}
 	
+	public PropertyChangeSupport getPcs()
+	{
+		return pcs;
+	}
+	
 	public void addVetoableChangeListener(VetoableChangeListener listener) 
 	{
 		vcs.addVetoableChangeListener(listener);
@@ -133,5 +150,10 @@ public class User implements Serializable{
 	public void removeVetoableChangeListener(VetoableChangeListener listener) 
 	{
 		vcs.removeVetoableChangeListener(listener);
+	}
+	
+	public VetoableChangeSupport getVcs()
+	{
+		return vcs;
 	}
 }
