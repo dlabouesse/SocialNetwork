@@ -1,6 +1,7 @@
 package com.cbd.social_network.ui.logged_in.panels;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -23,7 +24,7 @@ public class MyProfilePanel extends JPanel{
 	private JTextArea newPostField;
 	private Box lastPosts;
 	
-	public MyProfilePanel(User user)
+	public MyProfilePanel(User user) throws PropertyVetoException
 	{
 		this.setLayout(new BorderLayout());
 
@@ -80,7 +81,7 @@ public class MyProfilePanel extends JPanel{
 		
 	}
 
-	public void updatePosts()
+	public void updatePosts() throws PropertyVetoException
 	{
 		User user = WindowsManager.getInstance().getLoggedInUser();
 		Post post = DatabaseManager.getInstance().retrieveLastPost(user);

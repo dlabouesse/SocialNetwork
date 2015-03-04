@@ -3,6 +3,7 @@ package com.cbd.social_network.ui.logged_in.panels;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -26,7 +27,7 @@ public class FriendProfilePanel extends JPanel {
 	private Box lastPostsBox;
 	private User friend;
 	
-	public FriendProfilePanel(User friend)
+	public FriendProfilePanel(User friend) throws PropertyVetoException
 	{
 		this.friend = friend;
 		this.setLayout(new BorderLayout());
@@ -99,7 +100,7 @@ public class FriendProfilePanel extends JPanel {
 		return postField.getText();
 	}
 
-	public void updatePosts() 
+	public void updatePosts() throws PropertyVetoException 
 	{
 		Post post = DatabaseManager.getInstance().retrieveLastPost(friend);
 		

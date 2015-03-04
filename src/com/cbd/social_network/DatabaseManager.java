@@ -1,5 +1,6 @@
 package com.cbd.social_network;
 
+import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -103,7 +104,7 @@ public class DatabaseManager {
 			}
 		}
 		
-		public User getUser(String email, String password)
+		public User getUser(String email, String password) throws PropertyVetoException
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectUserStatement = null;
@@ -161,7 +162,7 @@ public class DatabaseManager {
 			return user;
 		}
 		
-		private User getUser(long id)
+		private User getUser(long id) throws PropertyVetoException
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectUserStatement = null;
@@ -277,7 +278,7 @@ public class DatabaseManager {
 			}
 		}
 	
-		public ArrayList<Post> retrievePosts(User user)
+		public ArrayList<Post> retrievePosts(User user) throws PropertyVetoException
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectPostsStatement = null;
@@ -350,7 +351,7 @@ public class DatabaseManager {
 			return posts;
 		}
 		
-		public Post retrieveLastPost(User user)
+		public Post retrieveLastPost(User user) throws PropertyVetoException
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectPostStatement = null;
@@ -476,7 +477,7 @@ public class DatabaseManager {
 			return id;
 		}
 		
-		private ArrayList<User> getFriends(long id) 
+		private ArrayList<User> getFriends(long id) throws PropertyVetoException 
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectFriendsStatement = null;
@@ -532,7 +533,7 @@ public class DatabaseManager {
 			return friends;
 		}
 
-		public ArrayList<User> searchUsers(User loggedInUser, String search) 
+		public ArrayList<User> searchUsers(User loggedInUser, String search) throws PropertyVetoException 
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectMatchingUsersStatement = null;
@@ -651,7 +652,7 @@ public class DatabaseManager {
 			}
 		}
 
-		public ArrayList<Post> retrieveHotPosts(User loggedInUser) 
+		public ArrayList<Post> retrieveHotPosts(User loggedInUser) throws PropertyVetoException 
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectHotPostsStatement = null;
@@ -873,6 +874,147 @@ public class DatabaseManager {
 				{
 					if (updatePasswordStatement != null)
 						updatePasswordStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+		}
+
+		public void updateUserFirstName(User loggedInUser, String firstName) 
+		{
+			Connection dbConnection = null;
+			PreparedStatement updateFirstNameStatement = null;
+
+			try
+			{
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String updateFirstName = "UPDATE user SET first_name=? WHERE email = ?";
+
+				updateFirstNameStatement = dbConnection.prepareStatement(updateFirstName);
+				
+				updateFirstNameStatement.setString(1, firstName);
+				updateFirstNameStatement.setString(2, loggedInUser.getEmail());
+
+				updateFirstNameStatement.executeUpdate(); 
+				
+				dbConnection.commit();
+				
+				updateFirstNameStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (updateFirstNameStatement != null)
+						updateFirstNameStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+		}
+
+		public void updateUserLastName(User loggedInUser, String lastName) 
+		{
+			Connection dbConnection = null;
+			PreparedStatement updateLastNameStatement = null;
+
+			try
+			{
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String updateLastName = "UPDATE user SET last_name=? WHERE email = ?";
+
+				updateLastNameStatement = dbConnection.prepareStatement(updateLastName);
+				
+				updateLastNameStatement.setString(1, lastName);
+				updateLastNameStatement.setString(2, loggedInUser.getEmail());
+
+				updateLastNameStatement.executeUpdate(); 
+				
+				dbConnection.commit();
+				
+				updateLastNameStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (updateLastNameStatement != null)
+						updateLastNameStatement.close();
+					
+					if (dbConnection != null)
+						dbConnection.close();
+				}
+				catch(SQLException se)
+				{
+					// Handle errors for JDBC
+					se.printStackTrace();
+				}
+			}
+		}
+
+		public void updateUserEmail(String oldEmail, String newEmail) 
+		{
+			Connection dbConnection = null;
+			PreparedStatement updateEmailStatement = null;
+
+			try
+			{
+				dbConnection = getDBConnection();
+				dbConnection.setAutoCommit(false);
+				
+				String updateEmail = "UPDATE user SET email=? WHERE email = ?";
+
+				updateEmailStatement = dbConnection.prepareStatement(updateEmail);
+				
+				updateEmailStatement.setString(1, newEmail);
+				updateEmailStatement.setString(2, oldEmail);
+
+				updateEmailStatement.executeUpdate(); 
+				
+				dbConnection.commit();
+				
+				updateEmailStatement.close();
+				dbConnection.close();
+			}
+			catch(SQLException se)
+			{
+				// Handle errors for JDBC
+				se.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					if (updateEmailStatement != null)
+						updateEmailStatement.close();
 					
 					if (dbConnection != null)
 						dbConnection.close();

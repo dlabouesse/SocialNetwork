@@ -2,6 +2,7 @@ package com.cbd.social_network.ui.logged_in.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
@@ -40,10 +41,20 @@ public class PostActionListener implements ActionListener{
 			
 			DatabaseManager.getInstance().persistNewPost(post);
 			
-			myProfilePanel.updatePosts();
+			try {
+				myProfilePanel.updatePosts();
+			} catch (PropertyVetoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
-			hotPostsPanel.updateHotPosts();
+			try {
+				hotPostsPanel.updateHotPosts();
+			} catch (PropertyVetoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		//New post from logged in user to recipient
 		else
@@ -66,13 +77,28 @@ public class PostActionListener implements ActionListener{
 				
 				DatabaseManager.getInstance().persistNewPost(post);
 				
-				friendProfilePanel.updatePosts();
+				try {
+					friendProfilePanel.updatePosts();
+				} catch (PropertyVetoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getTabs().getComponent(0);
-				myProfilePanel.updatePosts();
+				try {
+					myProfilePanel.updatePosts();
+				} catch (PropertyVetoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
-				hotPostsPanel.updateHotPosts();
+				try {
+					hotPostsPanel.updateHotPosts();
+				} catch (PropertyVetoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			else
 				System.out.println("An error occured while creating a new post to "+recipient.getName());

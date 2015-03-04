@@ -2,6 +2,7 @@ package com.cbd.social_network.ui.logged_in.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 
 import com.cbd.social_network.DatabaseManager;
@@ -23,7 +24,13 @@ public class SearchUserActionListener implements ActionListener{
 		//TODO use config file for min length
 		if(myFriendsPanel.getSearchString().length() > 0)
 		{
-			ArrayList<User> results = DatabaseManager.getInstance().searchUsers(ui.getLoggedInUser(), myFriendsPanel.getSearchString());
+			ArrayList<User> results = null;
+			try {
+				results = DatabaseManager.getInstance().searchUsers(ui.getLoggedInUser(), myFriendsPanel.getSearchString());
+			} catch (PropertyVetoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			if (results.size()==0)
 				myFriendsPanel.displayError("No results found!");
 			else

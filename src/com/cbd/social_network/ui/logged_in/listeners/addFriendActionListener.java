@@ -2,6 +2,7 @@ package com.cbd.social_network.ui.logged_in.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
@@ -33,7 +34,12 @@ public class addFriendActionListener implements ActionListener
 		ui.getLoggedInUser().addFriend(friend);
 
 		HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
-		hotPostsPanel.updateHotPosts();
+		try {
+			hotPostsPanel.updateHotPosts();
+		} catch (PropertyVetoException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 }

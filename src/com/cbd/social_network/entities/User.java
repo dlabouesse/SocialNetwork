@@ -1,14 +1,22 @@
 package com.cbd.social_network.entities;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.beans.VetoableChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class User {
+public class User implements Serializable{
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
 	private ArrayList<User> friends;
+	private PropertyChangeSupport pcs;
+	private VetoableChangeSupport vcs;
 	
 	public User()
 	{
@@ -17,6 +25,8 @@ public class User {
 		this.email = null;
 		this.password = null;
 		this.friends = new ArrayList<User>();
+		this.pcs = new PropertyChangeSupport(this);
+		this.vcs = new VetoableChangeSupport(this);
 	}
 	public User(String firstName, String lastName, String email, String password)
 	{
@@ -25,6 +35,65 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.friends = new ArrayList<User>();
+		this.pcs = new PropertyChangeSupport(this);
+		this.vcs = new VetoableChangeSupport(this);
+	}
+	
+	public String getFirstName()
+	{
+		return this.firstName;
+	}
+	public void setFirstName(String firstName) throws PropertyVetoException
+	{
+		this.vcs.fireVetoableChange("First name", null, firstName);
+		this.firstName = firstName;
+		this.pcs.firePropertyChange("First name", null, firstName);
+	}
+	
+	public String getLastName()
+	{
+		return this.lastName;
+	}
+	public void setLastName(String lastName) throws PropertyVetoException
+	{
+		this.vcs.fireVetoableChange("Last name", null, lastName);
+		this.lastName=lastName;
+		this.pcs.firePropertyChange("Last name", null, lastName);
+	}
+	
+	public String getName()
+	{
+		return this.getFirstName() + " " + this.getLastName();
+	}
+	
+	public String getEmail()
+	{
+		return this.email;
+	}
+	public void setEmail(String email) throws PropertyVetoException
+	{
+		this.vcs.fireVetoableChange("Email", null, email);
+		String oldEmail = this.email;
+		this.email = email;
+		this.pcs.firePropertyChange("Email", oldEmail, email);
+	}
+	
+	public String getPassword()
+	{
+		return this.password;
+	}
+	public void setPassword(String password)
+	{
+		this.password=password;
+	}
+
+	public Post createPost(String content, User recipient)
+	{
+		return new Post(content, this, recipient);
+	}
+	public Post createPost(String content)
+	{
+		return new Post(content, this);
 	}
 	public void addFriend(User user)
 	{
@@ -46,56 +115,30 @@ public class User {
 		return friends;
 	}
 	
+	public void addPropertyChangeListener(PropertyChangeListener listener) 
+	{
+		pcs.addPropertyChangeListener(listener);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener listener) 
+	{
+		pcs.removePropertyChangeListener(listener);
+	}
+	
+	public void addVetoableChangeListener(VetoableChangeListener listener) 
+	{
+		vcs.addVetoableChangeListener(listener);
+	}
+
+	public void removeVetoableChangeListener(VetoableChangeListener listener) 
+	{
+		vcs.removeVetoableChangeListener(listener);
+	}
+	//TODO remove method
 	public void displayFriends()
 	{
 		Iterator<User> it = friends.iterator();
 	    while(it.hasNext())
 	      System.out.println(it.next().getName());
-	}
-	
-	public String getFirstName()
-	{
-		return this.firstName;
-	}
-	public void setFirstName(String firstName)
-	{
-		this.firstName = firstName;
-	}
-	
-	public String getLastName()
-	{
-		return this.lastName;
-	}
-	public void setLastName(String lastName)
-	{
-		this.lastName=lastName;
-	}
-	
-	public String getName()
-	{
-		return this.getFirstName() + " " + this.getLastName();
-	}
-	
-	public String getEmail()
-	{
-		return this.email;
-	}
-	public void setEmail(String email)
-	{
-		this.email = email;
-	}
-	
-	public String getPassword()
-	{
-		return this.password;
-	}
-
-	public Post createPost(String content, User recipient)
-	{
-		return new Post(content, this, recipient);
-	}
-	public Post createPost(String content)
-	{
-		return new Post(content, this);
 	}
 }

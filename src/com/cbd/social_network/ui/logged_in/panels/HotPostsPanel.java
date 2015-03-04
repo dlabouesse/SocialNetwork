@@ -1,6 +1,7 @@
 package com.cbd.social_network.ui.logged_in.panels;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -9,6 +10,7 @@ import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.Post;
@@ -17,7 +19,7 @@ public class HotPostsPanel extends JPanel
 {
 	private Box hotPosts;
 	
-	public HotPostsPanel()
+	public HotPostsPanel() throws PropertyVetoException
 	{
 		this.setLayout(new BorderLayout());
 		hotPosts = Box.createVerticalBox();
@@ -57,7 +59,7 @@ public class HotPostsPanel extends JPanel
 	    }
 	}
 	
-	public void updateHotPosts()
+	public void updateHotPosts() throws PropertyVetoException
 	{
 		hotPosts.removeAll();
 		

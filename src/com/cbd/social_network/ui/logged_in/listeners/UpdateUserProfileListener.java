@@ -2,6 +2,7 @@ package com.cbd.social_network.ui.logged_in.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
@@ -17,42 +18,48 @@ public class UpdateUserProfileListener implements ActionListener{
 		
 		User loggedInUser = ui.getLoggedInUser();
 		
-		String changes ="";
+		//String changes ="";
 		boolean detailsChanged =false;
-		User newLoggedInUser = new User(loggedInUser.getFirstName(), loggedInUser.getLastName(), loggedInUser.getEmail(), null);
 		
 		if(!parametersPanel.getFirstName().equals(loggedInUser.getFirstName()))
 		{
 			detailsChanged = true;
-			changes+=" First name updated!";
-			//TODO Validates
-			newLoggedInUser.setFirstName(parametersPanel.getFirstName());
+			//changes+=" First name updated!";
+			try {
+				loggedInUser.setFirstName(parametersPanel.getFirstName());
+			} catch (PropertyVetoException e1) {
+				parametersPanel.displayDetailsUpdateMessage("Error: first name must be longer!");
+				parametersPanel.setFirstName(loggedInUser.getFirstName());
+				e1.printStackTrace();
+			}
 		}
 		if(!parametersPanel.getLastName().equals(loggedInUser.getLastName()))
 		{
 			detailsChanged = true;
-			changes+=" Last name updated!";
-			//TODO Validates
-			newLoggedInUser.setLastName(parametersPanel.getLastName());
+			//changes+=" Last name updated!";
+			try {
+				loggedInUser.setLastName(parametersPanel.getLastName());
+			} catch (PropertyVetoException e1) {
+				parametersPanel.displayDetailsUpdateMessage("Error: Last name must be longer!");
+				parametersPanel.setLastName(loggedInUser.getLastName());
+				e1.printStackTrace();
+			}
 		}
 		if(!parametersPanel.getEmail().equals(loggedInUser.getEmail()))
 		{
 			detailsChanged = true;
-			changes+=" Email updated!";
+			//changes+=" Email updated!";
 			//TODO Validates
-			newLoggedInUser.setEmail(parametersPanel.getEmail());
+			try {
+				loggedInUser.setEmail(parametersPanel.getEmail());
+			} catch (PropertyVetoException e1) {
+				parametersPanel.displayDetailsUpdateMessage("Error: Email address is not valid!");
+				parametersPanel.setEmail(loggedInUser.getEmail());
+				e1.printStackTrace();
+			}
 		}
 		
-		if(detailsChanged)
-		{
-			DatabaseManager.getInstance().updateUser(loggedInUser, newLoggedInUser);
-			parametersPanel.displayDetailsUpdateMessage(changes);
-			loggedInUser.setFirstName(newLoggedInUser.getFirstName());
-			loggedInUser.setLastName(newLoggedInUser.getLastName());
-			loggedInUser.setEmail(newLoggedInUser.getEmail());
-			ui.getTabs().setTitleAt(0, loggedInUser.getName());
-		}
-		else
+		if(!detailsChanged)
 		{
 			parametersPanel.displayDetailsUpdateMessage("");
 		}

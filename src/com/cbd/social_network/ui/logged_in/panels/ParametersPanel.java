@@ -161,4 +161,19 @@ public class ParametersPanel extends JPanel{
 		passwordUpdateLabel.setText(message);
 	}
 
+	public void setFirstName(String firstName) 
+	{
+		this.firstNameField.setText(firstName);
+	}
+	
+	public void setLastName(String firstName) 
+	{
+		this.lastNameField.setText(firstName);
+	}
+	
+	public void setEmail(String firstName) 
+	{
+		this.emailField.setText(firstName);
+	}
+
 }

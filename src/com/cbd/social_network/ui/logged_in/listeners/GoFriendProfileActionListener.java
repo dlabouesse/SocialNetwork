@@ -2,6 +2,7 @@ package com.cbd.social_network.ui.logged_in.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
@@ -34,7 +35,12 @@ public class GoFriendProfileActionListener implements ActionListener
 			ui.getTabs().setSelectedIndex(indexOfExistingPanel);
 		else
 		{
-			ui.getTabs().add(new FriendProfilePanel(friend), ui.getTabs().getTabCount()-1);
+			try {
+				ui.getTabs().add(new FriendProfilePanel(friend), ui.getTabs().getTabCount()-1);
+			} catch (PropertyVetoException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			ui.getTabs().setTitleAt(ui.getTabs().getTabCount()-2, friend.getName());
 			ui.getTabs().setSelectedIndex(ui.getTabs().getTabCount()-2);
 			

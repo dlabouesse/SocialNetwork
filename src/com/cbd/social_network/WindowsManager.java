@@ -1,5 +1,7 @@
 package com.cbd.social_network;
 
+import java.beans.PropertyVetoException;
+
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
@@ -49,12 +51,14 @@ public class WindowsManager {
 		mainFrame.setVisible(true);
 	}
 	
-	public void logedInWindow(User user)
+	public void logedInWindow(User user) throws PropertyVetoException
 	{
 		this.loggedInUser.setFirstName(user.getFirstName());
 		this.loggedInUser.setLastName(user.getLastName());
 		this.loggedInUser.setEmail(user.getEmail());
 		this.loggedInUser.setFriends(user.getFriends());
+		this.loggedInUser.addPropertyChangeListener(new UserPropertyChangeListener());
+		this.loggedInUser.addVetoableChangeListener(new UserVetoableChangeListener());
 		
 		tabs = new JTabbedPane();
 		tabs.add(loggedInUser.getName(), new MyProfilePanel(loggedInUser));
