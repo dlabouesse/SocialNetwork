@@ -21,7 +21,8 @@ import com.cbd.social_network.ui.logged_in.listeners.PostActionListener;
 
 public class MyProfilePanel extends JPanel{
 	
-	private JTextArea newPostField;
+	private JTextArea newPostContentField;
+	private JLabel postContentErrorLabel;
 	private Box lastPosts;
 	
 	public MyProfilePanel(User user) throws PropertyVetoException
@@ -33,17 +34,20 @@ public class MyProfilePanel extends JPanel{
 
 		JLabel newPostLabel = new JLabel("New post:");
 
-		newPostField = new JTextArea();
-		newPostField.setRows(6);
+		newPostContentField = new JTextArea();
+		newPostContentField.setRows(6);
 		
-		JScrollPane scrollPostField = new JScrollPane(newPostField);
+		JScrollPane scrollPostField = new JScrollPane(newPostContentField);
 		
 		JButton postButton = new JButton("Post");
 		postButton.addActionListener(new PostActionListener());
 		
+		postContentErrorLabel = new JLabel("");
+		
 		newPostBox.add(newPostLabel);
 		newPostBox.add(scrollPostField);
 		newPostBox.add(postButton);
+		newPostBox.add(postContentErrorLabel);
 		
 		
 		lastPosts = Box.createVerticalBox();
@@ -102,11 +106,16 @@ public class MyProfilePanel extends JPanel{
     	
     	lastPosts.add(postContent, 0);
     	lastPosts.revalidate();
-    	newPostField.setText("");
+    	newPostContentField.setText("");
 	}
 
-	public String getPost() 
+	public String getPostContent() 
 	{
-		return newPostField.getText();
+		return newPostContentField.getText();
+	}
+
+	public void setPostContentErrorLabel(String message) 
+	{
+		this.postContentErrorLabel.setText(message);
 	}
 }

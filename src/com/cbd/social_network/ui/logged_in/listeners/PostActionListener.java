@@ -3,6 +3,7 @@ package com.cbd.social_network.ui.logged_in.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.util.regex.Pattern;
 
 import com.cbd.social_network.DatabaseManager;
 import com.cbd.social_network.WindowsManager;
@@ -35,23 +36,29 @@ public class PostActionListener implements ActionListener{
 		{
 			MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getTabs().getComponent(0);
 			
-			Post post = new Post(myProfilePanel.getPost(), ui.getLoggedInUser());
-			
-			//TODO Check validation of field
-			
-			DatabaseManager.getInstance().persistNewPost(post);
-			
-			try {
-				myProfilePanel.updatePosts();
-			} catch (PropertyVetoException e1) {
-				e1.printStackTrace();
+			if(isPostContentValid(myProfilePanel.getPostContent()))
+			{
+				Post post = new Post(myProfilePanel.getPostContent(), ui.getLoggedInUser());
+				
+				DatabaseManager.getInstance().persistNewPost(post);
+				myProfilePanel.setPostContentErrorLabel("");
+				
+				try {
+					myProfilePanel.updatePosts();
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
+				}
+				
+				HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
+				try {
+					hotPostsPanel.updateHotPosts();
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
+				}
 			}
-			
-			HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
-			try {
-				hotPostsPanel.updateHotPosts();
-			} catch (PropertyVetoException e1) {
-				e1.printStackTrace();
+			else
+			{
+				myProfilePanel.setPostContentErrorLabel("The post must be between 2 and 180 characters!");
 			}
 		}
 		//New post from logged in user to recipient
@@ -69,35 +76,52 @@ public class PostActionListener implements ActionListener{
 			if (indexOfFriendPanel>-1)
 			{
 				FriendProfilePanel friendProfilePanel =(FriendProfilePanel)ui.getTabs().getComponentAt(indexOfFriendPanel);
-				Post post = new Post(friendProfilePanel.getPost(), ui.getLoggedInUser(), recipient);
 				
-				//TODO Check validation of field
-				
-				DatabaseManager.getInstance().persistNewPost(post);
-				
-				try {
-					friendProfilePanel.updatePosts();
-				} catch (PropertyVetoException e1) {
-					e1.printStackTrace();
+				if(isPostContentValid(friendProfilePanel.getPostContent()))
+				{
+					Post post = new Post(friendProfilePanel.getPostContent(), ui.getLoggedInUser(), recipient);
+					
+					DatabaseManager.getInstance().persistNewPost(post);
+					friendProfilePanel.setPostContentErrorLabel("");
+					
+					try {
+						friendProfilePanel.updatePosts();
+					} catch (PropertyVetoException e1) {
+						e1.printStackTrace();
+					}
+					
+					MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getTabs().getComponent(0);
+					try {
+						myProfilePanel.updatePosts();
+					} catch (PropertyVetoException e1) {
+						e1.printStackTrace();
+					}
+					
+					HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
+					try {
+						hotPostsPanel.updateHotPosts();
+					} catch (PropertyVetoException e1) {
+						e1.printStackTrace();
+					}
+				}
+				else
+				{
+					friendProfilePanel.setPostContentErrorLabel("The post must be between 2 and 180 characters!");
 				}
 				
-				MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getTabs().getComponent(0);
-				try {
-					myProfilePanel.updatePosts();
-				} catch (PropertyVetoException e1) {
-					e1.printStackTrace();
-				}
-				
-				HotPostsPanel hotPostsPanel = (HotPostsPanel)ui.getTabs().getComponent(2);
-				try {
-					hotPostsPanel.updateHotPosts();
-				} catch (PropertyVetoException e1) {
-					e1.printStackTrace();
-				}
 			}
 			else
 				System.out.println("An error occured while creating a new post to "+recipient.getName());
 		}
+	}
+	
+	private boolean isPostContentValid(String content)
+	{
+		Pattern pattern = Pattern.compile(".{2,180}", Pattern.DOTALL);
+		if (pattern.matcher(content).matches())
+			return true;
+		else
+			return false;
 	}
 
 }

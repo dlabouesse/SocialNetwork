@@ -1048,7 +1048,6 @@ public class DatabaseManager {
 				
 				while (rs.next()) 
 				{
-					System.out.println(rs.getInt("nb"));
 					if(rs.getInt("nb")>0)
 						emailAlreadyExist = true;
 				}

@@ -23,9 +23,10 @@ import com.cbd.social_network.ui.logged_in.listeners.PostActionListener;
 
 public class FriendProfilePanel extends JPanel {
 
-	private JTextArea postField;
+	private JTextArea postContentField;
 	private Box lastPostsBox;
 	private User friend;
+	private JLabel postContentErrorLabel;
 	
 	public FriendProfilePanel(User friend) throws PropertyVetoException
 	{
@@ -44,18 +45,21 @@ public class FriendProfilePanel extends JPanel {
 		//NEW POST SECTION
 		JLabel newPostLabel = new JLabel("New post:");
 		
-		postField = new JTextArea();
-		postField.setRows(6);
+		postContentField = new JTextArea();
+		postContentField.setRows(6);
 		
-		JScrollPane scrollPostField = new JScrollPane(postField);
+		JScrollPane scrollPostField = new JScrollPane(postContentField);
 		
 		JButton postButton = new JButton("Post");
 		postButton.addActionListener(new PostActionListener(friend));
+		
+		postContentErrorLabel = new JLabel("");
 		
 		Box newPostBox = Box.createVerticalBox();
 		newPostBox.add(newPostLabel);
 		newPostBox.add(scrollPostField);
 		newPostBox.add(postButton);
+		newPostBox.add(postContentErrorLabel);
 		
 		this.add(newPostBox, BorderLayout.NORTH);
 		
@@ -95,9 +99,9 @@ public class FriendProfilePanel extends JPanel {
 
 	}
 
-	public String getPost() 
+	public String getPostContent() 
 	{
-		return postField.getText();
+		return postContentField.getText();
 	}
 
 	public void updatePosts() throws PropertyVetoException 
@@ -120,6 +124,11 @@ public class FriendProfilePanel extends JPanel {
     	
     	lastPostsBox.add(postContent, 0);
     	lastPostsBox.revalidate();
-    	postField.setText("");
+    	postContentField.setText("");
+	}
+	
+	public void setPostContentErrorLabel(String message)
+	{
+		this.postContentErrorLabel.setText(message);
 	}
 }
