@@ -14,7 +14,7 @@ import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
 
 public class DatabaseManager {
-	// 1: DB Setup - URL's and credentials
+
 		private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 		private static final String DB_URL = "jdbc:mysql://localhost/social_network";
 		private static final String DB_USER = "user";
@@ -46,16 +46,15 @@ public class DatabaseManager {
 				return dbConnection;
 
 			} catch (ClassNotFoundException e) {
-				// Handle errors for Class.forName
 				e.printStackTrace();
 			} catch (SQLException se) {
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			return dbConnection;
 
 		}
 		
+		//Used for registration
 		public void persistNewUser(User user)
 		{
 			Connection dbConnection = null;
@@ -83,7 +82,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -98,12 +96,12 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 		}
 		
+		//Used for login. If the credentials are bad, the return is empty
 		public User getUser(String email, String password) throws PropertyVetoException
 		{
 			Connection dbConnection = null;
@@ -140,7 +138,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -155,13 +152,13 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 			return user;
 		}
 		
+		//Used for retrieving post
 		private User getUser(long id) throws PropertyVetoException
 		{
 			Connection dbConnection = null;
@@ -186,6 +183,8 @@ public class DatabaseManager {
 					user.setFirstName(rs.getString("first_name"));
 					user.setLastName(rs.getString("last_name"));
 					user.setEmail(rs.getString("email"));
+					//The password is not loaded in the User object
+					//It will retrieve when necessary only
 				}				
 				
 				rs.close();
@@ -194,7 +193,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -209,13 +207,13 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 			return user;
 		}
 		
+		//Used for creation of a new Post
 		public void persistNewPost(Post post)
 		{
 			Connection dbConnection = null;
@@ -230,7 +228,7 @@ public class DatabaseManager {
 			{
 				recipientId=authorId;
 			}
-			else //Get the recipient's id
+			else //Else, get the recipient's id
 			{
 				recipientId=getUserId(post.getRecipient());
 			}
@@ -257,7 +255,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -272,12 +269,12 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 		}
 	
+		//Displays all posts linked with an user (author, recipient, or both)
 		public ArrayList<Post> retrievePosts(User user) throws PropertyVetoException
 		{
 			Connection dbConnection = null;
@@ -303,24 +300,26 @@ public class DatabaseManager {
 				
 				while (rs.next()) 
 				{
+					//The user is the author and the recipient
 					if(rs.getLong("author_id")==userId && rs.getLong("recipient_id")==userId)
 					{
 						posts.add(new Post(rs.getString("content"), user));
 					}
+					//The user is the author
 					else if(rs.getLong("author_id")==userId && rs.getLong("recipient_id")!=userId)
 					{
 						posts.add(new Post(rs.getString("content"), user, getUser(rs.getLong("recipient_id"))));
 					}
+					//The user is the recipient
 					else if(rs.getLong("author_id")!=userId && rs.getLong("recipient_id")==userId)
 					{
 						posts.add(new Post(rs.getString("content"), getUser(rs.getLong("author_id")), user));
 					}
+					//If the user is neither author or recipient, the post shouldn't have been retrieved.
 					else
 					{
 						System.out.println("Error in retrieving posts.");
 					}
-					
-					//post.add(new Post()
 				}	
 				
 				rs.close();
@@ -329,7 +328,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -344,13 +342,13 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 			return posts;
 		}
 		
+		//Used for updating the UI in retrieving the last post
 		public Post retrieveLastPost(User user) throws PropertyVetoException
 		{
 			Connection dbConnection = null;
@@ -376,24 +374,28 @@ public class DatabaseManager {
 				
 				while (rs.next()) 
 				{
+					//The user is the author and the recipient
 					if(rs.getLong("author_id")==userId && rs.getLong("recipient_id")==userId)
 					{
 						post.setContent(rs.getString("content"));
 						post.setAuthor(user);
 						post.setRecipient(user);
 					}
+					//The user is the author
 					else if(rs.getLong("author_id")==userId && rs.getLong("recipient_id")!=userId)
 					{
 						post.setContent(rs.getString("content"));
 						post.setAuthor(user);
 						post.setRecipient(getUser(rs.getLong("recipient_id")));
 					}
+					//The user is the recipient
 					else if(rs.getLong("author_id")!=userId && rs.getLong("recipient_id")==userId)
 					{
 						post.setContent(rs.getString("content"));
 						post.setAuthor(getUser(rs.getLong("author_id")));
 						post.setRecipient(user);
 					}
+					//If the user is neither author or recipient, the post shouldn't have been retrieved.
 					else
 					{
 						System.out.println("Error in retrieving last post.");
@@ -406,7 +408,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -421,12 +422,12 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 			return post;
 		}
+		
 		
 		private long getUserId(User user)
 		{
@@ -455,7 +456,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -470,13 +470,13 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 			return id;
 		}
 		
+		//Called when retrieving an user
 		private ArrayList<User> getFriends(long id) throws PropertyVetoException 
 		{
 			Connection dbConnection = null;
@@ -496,6 +496,7 @@ public class DatabaseManager {
 				selectFriendsStatement.setLong(1, id);
 				ResultSet rs = selectFriendsStatement.executeQuery();
 				
+				//Add each friend to the list of friends
 				while (rs.next()) 
 				{
 					User currentFriend = new User();
@@ -511,7 +512,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -526,13 +526,13 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 			return friends;
 		}
 
+		//Searches user matching the search and who are not already a friend 
 		public ArrayList<User> searchUsers(User loggedInUser, String search) throws PropertyVetoException 
 		{
 			Connection dbConnection = null;
@@ -556,10 +556,11 @@ public class DatabaseManager {
 				while (rs.next()) 
 				{
 					Iterator<User> it = loggedInUser.getFriends().iterator();
+					//Verify that the current user is not the logged in user
 					if(!loggedInUser.getEmail().equals(rs.getString("user.email")))
 					{
 						boolean alreadyFriends = false;
-					    while(it.hasNext())
+					    while(it.hasNext())//Check is the current result is a already a friend
 					    {
 					    	if(it.next().getEmail().equals(rs.getString("user.email")))
 					    	{
@@ -567,7 +568,7 @@ public class DatabaseManager {
 					    		break;
 					    	}
 					    }
-					    if(!alreadyFriends)
+					    if(!alreadyFriends)//Add the result if not already a friend
 					    {
 							User currentResult = new User();
 							currentResult.setFirstName(rs.getString("user.first_name"));
@@ -584,7 +585,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -599,13 +599,13 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 			return results;
 		}
 
+		
 		public void addNewFriend(User user, User friend) 
 		{
 			Connection dbConnection = null;
@@ -631,7 +631,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -646,17 +645,18 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 		}
 
+		
 		public ArrayList<Post> retrieveHotPosts(User loggedInUser) throws PropertyVetoException 
 		{
 			Connection dbConnection = null;
 			PreparedStatement selectHotPostsStatement = null;
 			
+			//Store all the friends' id and the logged in user's in an HashSet
 			long loggedInUserId=getUserId(loggedInUser);
 			HashSet<Long> idList = new HashSet<Long>();
 			
@@ -684,20 +684,25 @@ public class DatabaseManager {
 				
 				while (rs.next()) 
 				{
+					//Check if the author or the recipient of the current post is in the HashSet
 					if(idList.contains(rs.getLong("author_id")) || idList.contains(rs.getLong("recipient_id")))
 					{
+						//The user is the author and the recipient
 						if(rs.getLong("author_id")==loggedInUserId && rs.getLong("recipient_id")==loggedInUserId)
 						{
 							hotPosts.add(new Post(rs.getString("content"), loggedInUser));
 						}
+						//The user is the author
 						else if(rs.getLong("author_id")==loggedInUserId && rs.getLong("recipient_id")!=loggedInUserId)
 						{
 							hotPosts.add(new Post(rs.getString("content"), loggedInUser, getUser(rs.getLong("recipient_id"))));
 						}
+						//The user is the recipient
 						else if(rs.getLong("author_id")!=loggedInUserId && rs.getLong("author_id")==loggedInUserId)
 						{
 							hotPosts.add(new Post(rs.getString("content"), getUser(rs.getLong("author_id")), loggedInUser));
 						}
+						//If the user is neither author or recipient
 						else
 						{
 							hotPosts.add(new Post(rs.getString("content"), getUser(rs.getLong("author_id")), getUser(rs.getLong("recipient_id"))));
@@ -711,7 +716,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -726,7 +730,6 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
@@ -734,6 +737,7 @@ public class DatabaseManager {
 			return hotPosts;
 		}
 		
+		//Used when updating the password to check if the old is correct
 		public String getPassword(User user)
 		{
 			Connection dbConnection = null;
@@ -766,7 +770,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -781,7 +784,6 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
@@ -814,7 +816,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -829,7 +830,6 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
@@ -861,7 +861,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -876,7 +875,6 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
@@ -908,7 +906,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -923,7 +920,6 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
@@ -955,7 +951,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -970,12 +965,13 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
 		}
 
+		//Check the uniqueness of the email for the registration
+		//Return true if the email already exist in database
 		public boolean existEmail(String email) 
 		{
 			Connection dbConnection = null;
@@ -1008,7 +1004,6 @@ public class DatabaseManager {
 			}
 			catch(SQLException se)
 			{
-				// Handle errors for JDBC
 				se.printStackTrace();
 			}
 			finally
@@ -1023,7 +1018,6 @@ public class DatabaseManager {
 				}
 				catch(SQLException se)
 				{
-					// Handle errors for JDBC
 					se.printStackTrace();
 				}
 			}
