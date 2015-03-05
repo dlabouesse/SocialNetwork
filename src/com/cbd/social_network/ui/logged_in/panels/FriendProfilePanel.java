@@ -104,9 +104,8 @@ public class FriendProfilePanel extends JPanel {
 		return postContentField.getText();
 	}
 
-	public void updatePosts() throws PropertyVetoException 
+	public void updatePosts(Post post) throws PropertyVetoException 
 	{
-		Post post = DatabaseManager.getInstance().retrieveLastPost(friend);
 		
     	JTextArea postContent = new JTextArea(post.getContent());
     	postContent.setBackground(this.getBackground());

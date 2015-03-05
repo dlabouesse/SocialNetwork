@@ -52,7 +52,7 @@ public class PostActionListener implements ActionListener{
 				myProfilePanel.setPostContentErrorLabel("");
 				
 				try {
-					myProfilePanel.updatePosts();
+					myProfilePanel.updatePosts(post);
 				} catch (PropertyVetoException e1) {
 					e1.printStackTrace();
 				}
@@ -93,14 +93,14 @@ public class PostActionListener implements ActionListener{
 					friendProfilePanel.setPostContentErrorLabel("");
 					
 					try {
-						friendProfilePanel.updatePosts();
+						friendProfilePanel.updatePosts(post);
 					} catch (PropertyVetoException e1) {
 						e1.printStackTrace();
 					}
 					
 					MyProfilePanel myProfilePanel =(MyProfilePanel)ui.getTabs().getComponent(0);
 					try {
-						myProfilePanel.updatePosts();
+						myProfilePanel.updatePosts(post);
 					} catch (PropertyVetoException e1) {
 						e1.printStackTrace();
 					}

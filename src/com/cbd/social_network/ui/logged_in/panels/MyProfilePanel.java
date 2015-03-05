@@ -85,10 +85,9 @@ public class MyProfilePanel extends JPanel{
 		
 	}
 
-	public void updatePosts() throws PropertyVetoException
+	public void updatePosts(Post post) throws PropertyVetoException
 	{
 		User user = WindowsManager.getInstance().getLoggedInUser();
-		Post post = DatabaseManager.getInstance().retrieveLastPost(user);
 		
     	JTextArea postContent = new JTextArea(post.getContent());
     	postContent.setBackground(lastPosts.getBackground());
