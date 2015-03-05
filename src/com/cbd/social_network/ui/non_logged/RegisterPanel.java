@@ -27,7 +27,7 @@ public class RegisterPanel extends JPanel{
 		JLabel registerTitleLabel = new JLabel("Please complete this form to register");
 		registerTitlePanel.add(registerTitleLabel);
 		
-		//loginFieldsPanel
+		//REGISTATION FIELDS 
 		JPanel registerFieldsPanel = new JPanel();
 		this.add(registerFieldsPanel, BorderLayout.CENTER);
 
@@ -75,7 +75,7 @@ public class RegisterPanel extends JPanel{
 		
 		registerFieldsPanel.add(b9);
 		
-		//loginMessagePanel
+		//MESSAGE SECTION
 		JPanel registerMesssagePanel = new JPanel();
 		this.add(registerMesssagePanel, BorderLayout.SOUTH);
 
@@ -110,6 +110,7 @@ public class RegisterPanel extends JPanel{
 		return String.valueOf(registerPasswordField.getPassword());
 	}
 	
+	//return false if the password doesn't match the confirmation
 	public boolean checkPasswordConfirmation()
 	{
 		if(String.valueOf(this.registerPasswordField.getPassword()).equals(String.valueOf(this.registerConfirmationField.getPassword())))

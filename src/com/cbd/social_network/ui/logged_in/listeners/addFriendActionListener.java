@@ -29,7 +29,7 @@ public class addFriendActionListener implements ActionListener
 		MyFriendsPanel myFriendsPanel =(MyFriendsPanel)ui.getTabs().getComponent(1);
 		
 		myFriendsPanel.updateFriend(friend);
-		myFriendsPanel.displayError(friend.getName()+" is now your friend!");
+		myFriendsPanel.displayMessage(friend.getName()+" is now your friend!");
 		
 		ui.getLoggedInUser().addFriend(friend);
 

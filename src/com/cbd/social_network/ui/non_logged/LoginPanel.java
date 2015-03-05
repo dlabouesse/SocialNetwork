@@ -24,7 +24,7 @@ public class LoginPanel extends JPanel{
 		JLabel loginTitleLabel = new JLabel("Please login to access the application");
 		loginTitlePanel.add(loginTitleLabel);
 		
-		//loginFieldsPanel
+		//LOGIN FIELDS SECTION
 		JPanel loginFieldsPanel = new JPanel();
 		this.add(loginFieldsPanel, BorderLayout.CENTER);
 
@@ -54,10 +54,8 @@ public class LoginPanel extends JPanel{
 		
 		loginFieldsPanel.add(b3);
 		
-
 		
-		
-		
+		//LOG WITH XML SECTION
 		JButton importXMLProfile = new JButton("Login with an XML File");
 		importXMLProfile.addActionListener(new ImportXMLProfileListener());
 		

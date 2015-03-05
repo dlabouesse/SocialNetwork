@@ -39,13 +39,13 @@ public class SearchUserActionListener implements ActionListener{
 				e1.printStackTrace();
 			}
 			if (results.size()==0)
-				myFriendsPanel.displayError("No results found!");
+				myFriendsPanel.displayMessage("No results found!");
 			else
 				myFriendsPanel.displayResults(results);
 		}
 		else
 		{
-			myFriendsPanel.displayError("You must enter at least "+searchMinLength+" characters!");
+			myFriendsPanel.displayMessage("You must enter at least "+searchMinLength+" characters!");
 		}
 	}
 }

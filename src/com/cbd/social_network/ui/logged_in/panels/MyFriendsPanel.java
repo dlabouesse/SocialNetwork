@@ -28,6 +28,7 @@ public class MyFriendsPanel extends JPanel{
 	{
 		this.setLayout(new BorderLayout());
 		
+		//MY FRIENDS SECTION
 		JPanel friendsPanel = new JPanel();
 		friendsPanel.setBorder(BorderFactory.createTitledBorder("My Friends"));
 		friendsList = Box.createVerticalBox();
@@ -49,6 +50,7 @@ public class MyFriendsPanel extends JPanel{
 	    	friendsList.add(b);
 	    }
 		
+	    //SEARCH FOR A USER SECTION
 		JPanel searchUser = new JPanel();
 		searchUser.setBorder(BorderFactory.createTitledBorder("Search for someone"));
 		
@@ -81,6 +83,7 @@ public class MyFriendsPanel extends JPanel{
 		return searchUserField.getText();
 	}
 
+	//displays the results of the search
 	public void displayResults(ArrayList<User> results) 
 	{
 		searchResults.removeAll();
@@ -104,7 +107,7 @@ public class MyFriendsPanel extends JPanel{
 	    searchResults.revalidate();
 	}
 
-	public void displayError(String message) 
+	public void displayMessage(String message) 
 	{
 		searchResults.removeAll();
 		
@@ -114,6 +117,7 @@ public class MyFriendsPanel extends JPanel{
 	    searchResults.revalidate();
 	}
 
+	//Add the new friend in the list
 	public void updateFriend(User friend) 
 	{
 		
