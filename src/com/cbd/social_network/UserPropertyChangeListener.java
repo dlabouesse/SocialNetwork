@@ -30,6 +30,7 @@ public class UserPropertyChangeListener implements PropertyChangeListener
 		{
 			DatabaseManager.getInstance().updateUserEmail(String.valueOf(evt.getOldValue()), String.valueOf(evt.getNewValue()));
 		}
+		//This is the event is not one of these above, this listener shouldn't have been called
 		else
 		{
 			System.err.println("Internal error.");

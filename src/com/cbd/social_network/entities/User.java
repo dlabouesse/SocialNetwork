@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType(propOrder = {"firstName", "lastName", "email", "friends"})
 public class User implements Serializable{
+	
 	private String firstName;
 	private String lastName;
 	private String email;

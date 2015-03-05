@@ -22,6 +22,7 @@ public class PropertiesFileManager {
 		return instance;
 	}
 	
+	//Read and return the value of the specified property
 	public String getProperty(String property)
 	{
 		String propertyValue = "";

@@ -37,6 +37,7 @@ public class WindowsManager {
 		return instance;
 	}
 	
+	//Screen for non logged in users
 	public void loginWindow()
 	{
 		mainFrame = new JFrame("My Social Network");
@@ -52,6 +53,7 @@ public class WindowsManager {
 		mainFrame.setVisible(true);
 	}
 	
+	//Screen for logged in users.
 	public void logedInWindow(User user) throws PropertyVetoException
 	{
 		this.loggedInUser.setFirstName(user.getFirstName());
@@ -73,6 +75,7 @@ public class WindowsManager {
 		mainFrame.revalidate();
 	}
 	
+	//Clear the ui
 	public void clear()
 	{
 		mainFrame.getContentPane().removeAll();
@@ -89,6 +92,7 @@ public class WindowsManager {
 		return loggedInUser;
 	}
 	
+	//Return a Color object depending of the required color
 	public Color getColor (String colorString)
 	{
 		Color color=null;

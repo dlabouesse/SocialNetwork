@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 
 public class Post implements Serializable{
+	
 	private String content;
 	private User author;
 	private User recipient;

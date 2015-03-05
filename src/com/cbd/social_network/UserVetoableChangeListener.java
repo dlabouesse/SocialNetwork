@@ -11,6 +11,7 @@ public class UserVetoableChangeListener implements VetoableChangeListener {
 	{
 		if (evt.getPropertyName()=="First name")
 		{
+			//At least 2 letters
 			Pattern pattern = Pattern.compile("[a-zA-Z]{2,}");
 			String newFirstName = (String) evt.getNewValue();
 			if (!pattern.matcher(newFirstName).matches()) 
@@ -20,6 +21,7 @@ public class UserVetoableChangeListener implements VetoableChangeListener {
 		}
 		else if (evt.getPropertyName()=="Last name")
 		{
+			//At least 2 letters
 			Pattern pattern = Pattern.compile("[a-zA-Z]{2,}");
 			String newLastName = (String) evt.getNewValue();
 			if (!pattern.matcher(newLastName).matches()) 
