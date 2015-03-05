@@ -41,23 +41,17 @@ public class HotPostsPanel extends JPanel
 	    	postContent.setBackground(WindowsManager.getInstance().getColor(hotPostsColor));
 	    	postContent.setEditable(false);
 	    	
-	    	String postTitle;
-	    	if(currentPost.getAuthor().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()) && currentPost.getRecipient().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
-	    	{
+	    	//Generates the post's title
+	    	String postTitle = WindowsManager.getInstance().generatesPostTitle(currentPost, WindowsManager.getInstance().getLoggedInUser());
+	    	
+	    	if(postTitle=="Status update")
 	    		postContent.setBackground(WindowsManager.getInstance().getColor(myPostsColor));
-	    		postTitle="Status update";
-	    	}
-	    	else if(currentPost.getRecipient().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
-	    		postTitle="From "+currentPost.getAuthor().getName();
-	    	else if(currentPost.getAuthor().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
-	    	{
+	    
+	    	else if(postTitle=="To "+currentPost.getRecipient().getName())
 	    		postContent.setBackground(WindowsManager.getInstance().getColor(myPostsColor));
-	    		postTitle="To "+currentPost.getRecipient().getName();
-	    	}
-	    	else if(currentPost.getAuthor().getName().equals(currentPost.getRecipient().getName()))
-	    		postTitle=currentPost.getAuthor().getName();
-	    	else
-	    		postTitle=currentPost.getAuthor().getName()+" to "+currentPost.getRecipient().getName();
+	    	
+	    	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
+	    	
 	    	
 	    	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
 	    	
@@ -83,24 +77,14 @@ public class HotPostsPanel extends JPanel
 	    	postContent.setBackground(WindowsManager.getInstance().getColor(hotPostsColor));
 	    	postContent.setEditable(false);
 	    	
-	    	String postTitle;
-	    	if(currentPost.getAuthor().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()) && currentPost.getRecipient().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
-	    	{
+	    	//Generates the post's title
+	    	String postTitle = WindowsManager.getInstance().generatesPostTitle(currentPost, WindowsManager.getInstance().getLoggedInUser());
+	    	
+	    	if(postTitle=="Status update")
 	    		postContent.setBackground(WindowsManager.getInstance().getColor(myPostsColor));
-	    		postTitle="Status update";
-	    	}
-	    	else if(currentPost.getRecipient().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
-	    		postTitle="From "+currentPost.getAuthor().getName();
-	    	else if(currentPost.getAuthor().getName().equals(WindowsManager.getInstance().getLoggedInUser().getName()))
-	    	{
+	    
+	    	else if(postTitle=="To "+currentPost.getRecipient().getName())
 	    		postContent.setBackground(WindowsManager.getInstance().getColor(myPostsColor));
-	    		postTitle="To "+currentPost.getRecipient().getName();
-	    	}
-	    		
-	    	else if(currentPost.getAuthor().getName().equals(currentPost.getRecipient().getName()))
-	    		postTitle=currentPost.getAuthor().getName();
-	    	else
-	    		postTitle=currentPost.getAuthor().getName()+" to "+currentPost.getRecipient().getName();
 	    	
 	    	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
 	    	

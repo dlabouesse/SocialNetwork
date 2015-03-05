@@ -22,7 +22,7 @@ public class GoFriendProfileActionListener implements ActionListener
 		WindowsManager ui = WindowsManager.getInstance();
 		
 		int indexOfExistingPanel = -1;
-		
+		//Verify that the friend's profile is not already open
 		for(int i=0 ; i<ui.getTabs().getTabCount() ; i++)
 		{
 			if(ui.getTabs().getTitleAt(i).equals(friend.getName()))
@@ -31,8 +31,10 @@ public class GoFriendProfileActionListener implements ActionListener
 				break;
 			}
 		}
+		//If already open, go to the tab
 		if (indexOfExistingPanel > -1)
 			ui.getTabs().setSelectedIndex(indexOfExistingPanel);
+		//Else, open a new tab
 		else
 		{
 			try {
@@ -41,7 +43,7 @@ public class GoFriendProfileActionListener implements ActionListener
 				e1.printStackTrace();
 			}
 			ui.getTabs().setTitleAt(ui.getTabs().getTabCount()-2, friend.getName());
-			ui.getTabs().setSelectedIndex(ui.getTabs().getTabCount()-2);
+			ui.getTabs().setSelectedIndex(ui.getTabs().getTabCount()-2);//Keep the parameter's pan in the right
 			
 		}
 	}

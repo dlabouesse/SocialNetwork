@@ -19,6 +19,7 @@ public class UpdateUserProfileListener implements ActionListener{
 		
 		boolean detailsChanged =false;
 		
+		//If the first name is modified
 		if(!parametersPanel.getFirstName().equals(loggedInUser.getFirstName()))
 		{
 			detailsChanged = true;
@@ -30,6 +31,7 @@ public class UpdateUserProfileListener implements ActionListener{
 				e1.printStackTrace();
 			}
 		}
+		//If the last name is modified
 		if(!parametersPanel.getLastName().equals(loggedInUser.getLastName()))
 		{
 			detailsChanged = true;
@@ -41,6 +43,7 @@ public class UpdateUserProfileListener implements ActionListener{
 				e1.printStackTrace();
 			}
 		}
+		//If the email address is modified
 		if(!parametersPanel.getEmail().equals(loggedInUser.getEmail()))
 		{
 			detailsChanged = true;
@@ -53,6 +56,7 @@ public class UpdateUserProfileListener implements ActionListener{
 			}
 		}
 		
+		//If nothing is modified, clear the label
 		if(!detailsChanged)
 		{
 			parametersPanel.displayDetailsUpdateMessage("");

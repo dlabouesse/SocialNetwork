@@ -123,6 +123,7 @@ public class PostActionListener implements ActionListener{
 		}
 	}
 	
+	//Return false if the content isn't valid
 	private boolean isPostContentValid(String content)
 	{
 		String postMinLength = PropertiesFileManager.getInstance().getProperty("postMinLength");

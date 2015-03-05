@@ -6,6 +6,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
+import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
 import com.cbd.social_network.ui.logged_in.panels.HotPostsPanel;
 import com.cbd.social_network.ui.logged_in.panels.MyFriendsPanel;
@@ -118,6 +119,33 @@ public class WindowsManager {
 		}
 		
 		return color;
+	}
+	
+	public String generatesPostTitle(Post post, User user)
+	{	
+		String postTitle;
+		
+		//The user is the author and the recipient
+    	if(post.getAuthor().getName().equals(user.getName()) && post.getRecipient().getName().equals(user.getName()))
+    		postTitle="Status update";
+    	
+    	//The user is the recipient only
+    	else if(post.getRecipient().getName().equals(user.getName()))
+    		postTitle="From "+post.getAuthor().getName();
+    	
+    	//The user is the author only
+    	else if(post.getAuthor().getName().equals(user.getName()))
+    		postTitle="To "+post.getRecipient().getName();
+    		
+    	//The user is neither author or recipient but the recipient and the user are the same user
+    	else if(post.getAuthor().getName().equals(post.getRecipient().getName()))
+    		postTitle=post.getAuthor().getName();
+    	
+    	//The user is neither author or recipient AND the recipient and the user are different
+    	else
+    		postTitle=post.getAuthor().getName()+" to "+post.getRecipient().getName();
+    	
+    	return postTitle;
 	}
 
 }

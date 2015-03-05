@@ -21,7 +21,8 @@ public class LoginActionListener implements ActionListener
 		} catch (PropertyVetoException e2) {
 			e2.printStackTrace();
 		}
-		if(user.getFirstName()!=null)//Login successful
+		//Login successful
+		if(user.getFirstName()!=null)
 		{
 			loginPanel.setLoginMessage("Welcome back "+user.getFirstName()+"!");
 			ui.clear();

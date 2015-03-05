@@ -82,13 +82,8 @@ public class FriendProfilePanel extends JPanel {
 	    	postContent.setBackground(this.getBackground());
 	    	postContent.setEditable(false);
 	    	
-	    	String postTitle;
-	    	if(currentPost.getAuthor().getName().equals(friend.getName()) && currentPost.getRecipient().getName().equals(friend.getName()))
-	    		postTitle="Status update";
-	    	else if(currentPost.getRecipient().getName().equals(friend.getName()))
-	    		postTitle="From "+currentPost.getAuthor().getName();
-	    	else
-	    		postTitle="To "+currentPost.getRecipient().getName();
+	    	//Generates the post's title
+	    	String postTitle = WindowsManager.getInstance().generatesPostTitle(currentPost, friend);
 	    	
 	    	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
 	    	
@@ -111,13 +106,8 @@ public class FriendProfilePanel extends JPanel {
     	postContent.setBackground(this.getBackground());
     	postContent.setEditable(false);
     	
-    	String postTitle;
-    	if(post.getAuthor().getName().equals(friend.getName()) && post.getRecipient().getName().equals(friend.getName()))
-    		postTitle="Status update";
-    	else if(post.getRecipient().getName().equals(friend.getName()))
-    		postTitle="From "+post.getAuthor().getName();
-    	else
-    		postTitle="To "+post.getRecipient().getName();
+    	//Generates the post's title
+    	String postTitle = WindowsManager.getInstance().generatesPostTitle(post, friend);
     	
     	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
     	

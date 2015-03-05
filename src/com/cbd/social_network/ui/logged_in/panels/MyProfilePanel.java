@@ -28,7 +28,8 @@ public class MyProfilePanel extends JPanel{
 	public MyProfilePanel(User user) throws PropertyVetoException
 	{
 		this.setLayout(new BorderLayout());
-
+		
+		//NEW POST SECTION
 		Box newPostBox = Box.createVerticalBox();
 		this.add(newPostBox, BorderLayout.NORTH);
 
@@ -49,11 +50,9 @@ public class MyProfilePanel extends JPanel{
 		newPostBox.add(postButton);
 		newPostBox.add(postContentErrorLabel);
 		
-		
+		//LAST POSTS SECTION
 		lastPosts = Box.createVerticalBox();
 		JScrollPane scrollPosts = new JScrollPane(lastPosts);
-		this.add(scrollPosts, BorderLayout.CENTER);
-		
 
 		scrollPosts.setBorder(BorderFactory.createTitledBorder("Last Posts"));
 		scrollPosts.setBackground(this.getBackground());
@@ -70,18 +69,15 @@ public class MyProfilePanel extends JPanel{
 	    	postContent.setBackground(this.getBackground());
 	    	postContent.setEditable(false);
 	    	
-	    	String postTitle;
-	    	if(currentPost.getAuthor().getName().equals(user.getName()) && currentPost.getRecipient().getName().equals(user.getName()))
-	    		postTitle="Status update";
-	    	else if(currentPost.getRecipient().getName().equals(user.getName()))
-	    		postTitle="From "+currentPost.getAuthor().getName();
-	    	else
-	    		postTitle="To "+currentPost.getRecipient().getName();
+	    	//Generates the post's title
+	    	String postTitle = WindowsManager.getInstance().generatesPostTitle(currentPost, user);
 	    	
 	    	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
 	    	
 	    	lastPosts.add(postContent);
 	    }
+	    
+	    this.add(scrollPosts, BorderLayout.CENTER);
 		
 	}
 
@@ -93,13 +89,8 @@ public class MyProfilePanel extends JPanel{
     	postContent.setBackground(lastPosts.getBackground());
     	postContent.setEditable(false);
     	
-    	String postTitle;
-    	if(post.getAuthor().getName().equals(user.getName()) && post.getRecipient().getName().equals(user.getName()))
-    		postTitle="Status update";
-    	else if(post.getRecipient().getName().equals(user.getName()))
-    		postTitle="From "+post.getAuthor().getName();
-    	else
-    		postTitle="To "+post.getRecipient().getName();
+    	//Generates the post's title
+    	String postTitle = WindowsManager.getInstance().generatesPostTitle(post, user);
     	
     	postContent.setBorder(BorderFactory.createTitledBorder(postTitle));
     	

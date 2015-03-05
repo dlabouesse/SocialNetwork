@@ -29,6 +29,7 @@ public class SearchUserActionListener implements ActionListener{
 		
 		int searchMinLength = Integer.parseInt(PropertiesFileManager.getInstance().getProperty("searchMinLength"));
 
+		//If the string length is long enough
 		if(myFriendsPanel.getSearchString().length() >= searchMinLength)
 		{
 			ArrayList<User> results = null;

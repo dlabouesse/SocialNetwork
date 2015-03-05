@@ -76,7 +76,8 @@ public class RegisterActionListener implements ActionListener
 				registerPanel.setRegisterMessage(errors);
 			}
 		}
-		else//Password doesn't match confirmation
+		//Password doesn't match confirmation
+		else
 		{
 			registerPanel.setRegisterMessage("Error! The password doesn't match the confirmation");
 		}
