@@ -71,7 +71,6 @@ public class WindowsManager {
 		
 		mainFrame.getContentPane().add(tabs);
 		mainFrame.revalidate();
-		System.out.println("Debug");
 	}
 	
 	public void clear()

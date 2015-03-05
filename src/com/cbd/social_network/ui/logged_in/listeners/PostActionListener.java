@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 
 import com.cbd.social_network.DatabaseManager;
+import com.cbd.social_network.PropertiesFileManager;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.Post;
 import com.cbd.social_network.entities.User;
@@ -35,23 +36,8 @@ public class PostActionListener implements ActionListener{
 	{
 		WindowsManager ui = WindowsManager.getInstance();
 		
-		String postMinLength = "2";
-		String postMaxLength = "180";
-
-		try {
-
-			InputStream input = new FileInputStream("config.properties");
-			Properties prop = new Properties();
-			prop.load(input);
-
-			postMinLength = prop.getProperty("postMinLength");
-			postMaxLength = prop.getProperty("posMaxLength");
-
-			input.close();
-
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		String postMinLength = PropertiesFileManager.getInstance().getProperty("postMinLength");
+		String postMaxLength = PropertiesFileManager.getInstance().getProperty("postMaxLength");
 		
 		//Status update from logged in user
 		if(recipient==null)
@@ -139,23 +125,8 @@ public class PostActionListener implements ActionListener{
 	
 	private boolean isPostContentValid(String content)
 	{
-		String postMinLength = "2";
-		String postMaxLength = "180";
-
-		try {
-
-			InputStream input = new FileInputStream("config.properties");
-			Properties prop = new Properties();
-			prop.load(input);
-
-			postMinLength = prop.getProperty("postMinLength");
-			postMaxLength = prop.getProperty("posMaxLength");
-
-			input.close();
-
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		String postMinLength = PropertiesFileManager.getInstance().getProperty("postMinLength");
+		String postMaxLength = PropertiesFileManager.getInstance().getProperty("postMaxLength");
 		
 		Pattern pattern = Pattern.compile(".{"+postMinLength+","+postMaxLength+"}", Pattern.DOTALL);
 		if (pattern.matcher(content).matches())

@@ -26,13 +26,6 @@ public class Post implements Serializable{
 		this.author = author;
 		this.recipient = author;
 	}
-	public void displayPost()
-	{
-		System.out.println("Posted by "+this.author.getName()+":");
-		System.out.println(this.content);
-		if(this.recipient!=this.author)
-			System.out.println("Posted for "+this.recipient.getName()+".");
-	}
 	
 	public void setAuthor(User author)
 	{

@@ -32,11 +32,10 @@ public class ProfileJAXBParser {
 		User loaddedUser = new User();
 		
 		try {
-			// initialise content and unmarshaller
+			
 			JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
-			// unmarshal and cast to College
 			loaddedUser = (User) jaxbUnmarshaller.unmarshal(inputFile);
 
 		} catch (JAXBException e) {
@@ -50,14 +49,11 @@ public class ProfileJAXBParser {
 
 		try {
 
-			// initialise content and marshaller
 			JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-			// marshall to file
 			jaxbMarshaller.marshal(user, file);
 
 		} catch (JAXBException e) {

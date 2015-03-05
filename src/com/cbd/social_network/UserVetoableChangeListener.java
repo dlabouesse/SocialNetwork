@@ -29,6 +29,8 @@ public class UserVetoableChangeListener implements VetoableChangeListener {
 		}
 		else if (evt.getPropertyName()=="Email")
 		{
+			// the password will have at least 4 digit, 1 upper case letters, and 2 lower case, 
+			// and more than 6 characters
 			Pattern pattern = Pattern.compile("[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})");
 			String email = (String) evt.getNewValue();
 			if (!pattern.matcher(email).matches())
@@ -37,9 +39,7 @@ public class UserVetoableChangeListener implements VetoableChangeListener {
 			}
 		}
 	
-			// the password will have at least 4 digit, 1 upper case letters, and 2 lower case, 
-			// and more than 6 characters
-			//
+			
 	}
 
 }

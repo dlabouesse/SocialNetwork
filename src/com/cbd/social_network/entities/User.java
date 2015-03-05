@@ -7,7 +7,6 @@ import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -32,16 +31,6 @@ public class User implements Serializable{
 		this.lastName = null;
 		this.email = null;
 		this.password = null;
-		this.friends = new ArrayList<User>();
-		this.pcs = new PropertyChangeSupport(this);
-		this.vcs = new VetoableChangeSupport(this);
-	}
-	public User(String firstName, String lastName, String email, String password)
-	{
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
 		this.friends = new ArrayList<User>();
 		this.pcs = new PropertyChangeSupport(this);
 		this.vcs = new VetoableChangeSupport(this);
@@ -98,14 +87,6 @@ public class User implements Serializable{
 		this.password=password;
 	}
 
-	public Post createPost(String content, User recipient)
-	{
-		return new Post(content, this, recipient);
-	}
-	public Post createPost(String content)
-	{
-		return new Post(content, this);
-	}
 	public void addFriend(User user)
 	{
 		this.friends.add(user);

@@ -2,12 +2,8 @@ package com.cbd.social_network.ui.logged_in.panels;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyVetoException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -33,8 +29,6 @@ public class HotPostsPanel extends JPanel
 		
 		String hotPostsColor = PropertiesFileManager.getInstance().getProperty("hotPostsColor");
 		String myPostsColor = PropertiesFileManager.getInstance().getProperty("myPostsColor");
-		
-		System.out.println(hotPostsColor);
 		
 		ArrayList<Post> posts = DatabaseManager.getInstance().retrieveHotPosts(WindowsManager.getInstance().getLoggedInUser());
 		

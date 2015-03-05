@@ -69,7 +69,6 @@ public class ParametersPanel extends JPanel{
 		b4.add(updateUserProfileButton);
 		b4.add(userDetailsUpdateLabel);
 		
-		//this.add(b4, BorderLayout.NORTH);
 		
 		//PASSWORD SECTION
 		JLabel oldPasswordLabel = new JLabel("Old password:");

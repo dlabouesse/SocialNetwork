@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import com.cbd.social_network.DatabaseManager;
+import com.cbd.social_network.PropertiesFileManager;
 import com.cbd.social_network.WindowsManager;
 import com.cbd.social_network.entities.User;
 import com.cbd.social_network.ui.logged_in.panels.MyFriendsPanel;
@@ -26,24 +27,7 @@ public class SearchUserActionListener implements ActionListener{
 		
 		MyFriendsPanel myFriendsPanel =(MyFriendsPanel)ui.getTabs().getComponent(1);
 		
-		int searchMinLength = 0;
-
-		// Read values from properties configuration
-		try {
-
-			// load a properties file
-			InputStream input = new FileInputStream("config.properties");
-			Properties prop = new Properties();
-			prop.load(input);
-
-			// get the property value and print it out
-			searchMinLength = Integer.parseInt(prop.getProperty("searchMinLength"));
-
-			input.close();
-
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
+		int searchMinLength = Integer.parseInt(PropertiesFileManager.getInstance().getProperty("searchMinLength"));
 
 		if(myFriendsPanel.getSearchString().length() >= searchMinLength)
 		{

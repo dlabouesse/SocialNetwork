@@ -40,31 +40,29 @@ public class LoginPanel extends JPanel{
 		loginPasswordField = new JPasswordField();
 		b2.add(loginPasswordLabel);
 		b2.add(loginPasswordField);
-		//passwordField.setColumns(10);
 		
 		JButton loginButton = new JButton("Login");
 		loginButton.addActionListener(new LoginActionListener());
+		
+		loginMessageLabel = new JLabel("");
 		
 		Box b3 = Box.createVerticalBox();
 		b3.add(b1);
 		b3.add(b2);
 		b3.add(loginButton);
+		b3.add(loginMessageLabel);
 		
 		loginFieldsPanel.add(b3);
 		
 
 		
-		loginMessageLabel = new JLabel("");
+		
 		
 		JButton importXMLProfile = new JButton("Login with an XML File");
 		importXMLProfile.addActionListener(new ImportXMLProfileListener());
 		
-		Box b4 = Box.createVerticalBox();
-		b4.add(loginMessageLabel);
-		b4.add(importXMLProfile);
 		
-		
-		this.add(b4, BorderLayout.SOUTH);
+		this.add(importXMLProfile, BorderLayout.SOUTH);
 
 		
 	}

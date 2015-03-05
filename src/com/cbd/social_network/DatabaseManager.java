@@ -733,57 +733,6 @@ public class DatabaseManager {
 			
 			return hotPosts;
 		}
-
-		public void updateUser(User pastLoggedInUser, User newLoggedInUser) 
-		{
-			Connection dbConnection = null;
-			PreparedStatement updateUserStatement = null;
-			
-			long userId = getUserId(pastLoggedInUser);
-
-			try
-			{
-				dbConnection = getDBConnection();
-				dbConnection.setAutoCommit(false);
-				
-				String updateUser = "UPDATE user SET first_name=?, last_name=?, email=? WHERE id = ?";
-
-				updateUserStatement = dbConnection.prepareStatement(updateUser);
-				
-				updateUserStatement.setString(1, newLoggedInUser.getFirstName());
-				updateUserStatement.setString(2, newLoggedInUser.getLastName());
-				updateUserStatement.setString(3, newLoggedInUser.getEmail());
-				updateUserStatement.setLong(4, userId);
-
-				updateUserStatement.executeUpdate(); 
-				
-				dbConnection.commit();
-				
-				updateUserStatement.close();
-				dbConnection.close();
-			}
-			catch(SQLException se)
-			{
-				// Handle errors for JDBC
-				se.printStackTrace();
-			}
-			finally
-			{
-				try
-				{
-					if (updateUserStatement != null)
-						updateUserStatement.close();
-					
-					if (dbConnection != null)
-						dbConnection.close();
-				}
-				catch(SQLException se)
-				{
-					// Handle errors for JDBC
-					se.printStackTrace();
-				}
-			}
-		}
 		
 		public String getPassword(User user)
 		{
